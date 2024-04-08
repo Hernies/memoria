@@ -2,8 +2,8 @@
 \chapter{Introducción}
 \label{ch:intro}
 
-\section{Motivación y Necesidad}
-\label{sec:motivacionyobjetivos}
+\section{Motivación y Aplicaciones}
+\label{sec:motivacionyaplicaciones}
 
 Las técnicas de Monitorización No Intrusiva de Carga (en inglés NILM o Non Intrusive Load Monitoring) extraen el consumo de electrodomésticos a partir de una curva de consumo agregada. \autocite[1]{NILMreview}. Dicho de otra forma. El monitoreo de carga no intrusivo es un sistema que infiere los consumos de diferentes dispositivos sobre una curva de consumo en la toma de corriente principal. Por ejemplo en la toma de corriente de una casa.
 
@@ -11,11 +11,28 @@ En Europa, un tercio de la energía eléctrica se ha generado mediante energías
 
 \todo[inline]{estimar el ahorro en emisiones si se optimizase el consumo sólo un 2\%}
 
-
-
 Realizar un monitoreo de carga no intrusivo es un problema complejo. Actualmente el área de soluciones NILM se encuentra en la fase de investigación y desarrollo. Por lo tanto. Mi objetivo para este trabajo es entrenar y analizar el rendimiento de una inteligencia artificial especializada en la clasificación de imágenes, transformando los datos de entrenamiento de series temporales a imágenes. Para más detalle, dirigirse al \textbf{\autoref{ch:desarrollo}}. Quiero ver cómo modificar el enfoque al problema afecta al rendimiento de la técnica en comparación con otras técnicas del estado del arte. 
 
-Siguiendo este objetivo y con el asesoramiento de Esteban García Cuesta, se decidió en hacer uso de datasets clasificados para un entrenamiento supervisado; además de una arquitectura concreta, compacta y computacionalmente baja en costes de entrenamiento. 
+Siguiendo este objetivo y con el asesoramiento de Esteban García Cuesta, se decidió en hacer uso de datasets clasificados para un entrenamiento supervisado; además de una arquitectura potente, compacta y computacionalmente baja en costes de entrenamiento. 
 
-\section{title}
+\section{Objetivos}
+\label{sec:objetivos}
+Previamente al comienzo del desarrollo del proyecto, se establecieron una serie de objetivos a cumplir, dividiendo el objetivo final en pasos coherentes y concretos.
+\begin{itemize}
+	\item Investigación del problema NILM (Monitorización de Carga No Intrusiva) y soluciones actuales
+	\item Elección de dataset con el que se entrenará a la inteligencia artificial.
+	\item Análisis y calibración del dataset.
+	\item Desarrollo codificador para transformar las series de datos a imágenes siguiendo la codificación GAF
+	\item Preprocesado de dataset a través del codificador, para generar tanto las imágenes como sus etiquetas asociadas. 
+	\item Instalación darknet CSPNet, el framework que contiene a CSPNet, la inteligencia artificial que se entrenará.
+	\item Entrenamiento del modelo. Una prueba de concepto del 10\% del dataset y modelo completo, con todo el dataset dedicado a entrenamiento.
+	\item Análisis del rendimiento del modelo con NILMTK, un toolkit que facilita la comparación del rendimiento con otros modelos. 
+	\item Comparación del rendimiento con otros modelos
+\end{itemize}
 
+\section{Alcance del proyecto}
+\label{sec:alcanceproyecto}
+\todo[inline]{alcance del proyecto, que busco tener al final de este proyecto }
+\section{Estructura de la Memoria}
+\label{sec:estructuramemoria}
+\todo[inline]{estructura de la memoria}
