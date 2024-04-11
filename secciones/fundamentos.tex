@@ -1,3 +1,53 @@
 \chapter{Fundamentos y Panorama Actual}
 \label{ch:fundamentos}
-Capítulo dedicado a describir los fundamentos 
+Capítulo dedicado a describir los fundamentos y el panorama actual del trabajo. 
+
+\section{Monitorización de Carga No Intrusiva}
+\label{se:MonitorizaciondeCargaNoIntrusiva}
+Este concepto fue inventado por George W. Hart, Ed Kern y Fred Schweppe en el Instituto Tecnológico de Massachussets, en los años ochenta \autocite{192069}. Fundados por el Electric Power Research Institute, podemos encontrar el proceso básico descrito en la patente estadounidense 4,858,141.
+Una breve bibliografía de George W. Hart: Actualmente ejerce como escultor desde 2017. Tiene esculturas en exposición en Berkeley, Princeton, Cambridge, Duke, Brown... Cofundó el Museo de las Matemáticas y se ha retirado recientemente, trabajó en ciencia computacional, matemáticas, educación e investigación.
+
+\subsection{Modelado y Teoría}
+\label{sse:ModeladoyTeoria}
+La técnica, descrita por Hart, Kern y Schweppe en su publicación modela los consumos en lo que nombran como "Modelo Total de Carga". El modelo total de carga depende de que aplicaciones están encendidas en un momento dado. Por lo que definen un 'proceso de cambio'
+$a(t)$ donde a es un dispositivo de consumo eléctrico en un instante de tiempo $t$. Suponiendo $n$ dispositivos,$a(t)$ será un vector Booleano de $n$ componentes:
+
+$$
+a_i(t)=
+	\left\{
+	\begin{array}{l}
+	1,\text{si dispositivo } i \text{ encendido en } t\\
+	0, \text{si dispositivo } i \text{ apagado en } t
+	\end{array}
+	\right.
+$$
+
+Continúan modelando el sistema de potencia total $P(t)$ para un sistema de corriente alterna como el estado de un dispositivo $a_i$ por su consumo $P_i$ con un pequeño ruido o error $e$
+$$
+P(t)=\sum_{i=1}^{n} a_i(t)P_i+e(t)
+$$
+
+El criterio para determinar el valor de cada una de los dispositivos es entonces:
+$$
+\hat{a}(t) = \underset{a}{\text{arg min}} \left| P(t) - \sum_{i=1}^{n} a_i(t)P_i \right|
+$$
+
+Esto nos lleva a un problema computacionalmente imposible de resolver salvo mediante la fuerza bruta\autocite[4]{192069} y poco margen de mejora en el modelado para simplificar su resolución.
+
+
+
+
+\subsection{Modelos de Markov Ocultos}
+
+\subsection{Sparse Coding}
+
+\subsection{Redes Neuronales}
+
+\section{CSPNet}
+
+
+\section{Codificación GAF}
+
+
+\section{NILMTK}
+
