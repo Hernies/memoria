@@ -9,7 +9,7 @@ Una breve bibliografía de George W. Hart: Actualmente ejerce como escultor desd
 
 \subsection{Modelado y Teoría}
 \label{sse:ModeladoyTeoria}
-La técnica, descrita por Hart, Kern y Schweppe en su publicación modela los consumos en lo que nombran como "Modelo Total de Carga". El modelo total de carga depende de que aplicaciones están encendidas en un momento dado. Por lo que definen un 'proceso de cambio'
+La técnica, descrita por Hart, Kern y Schweppe en su publicación modela los consumos en lo que nombran como "Modelo Total de Carga". El modelo total de carga depende de que dispositivos estén encendidos en un momento dado. Por lo que definen un 'proceso de cambio'
 $a(t)$ donde a es un dispositivo de consumo eléctrico en un instante de tiempo $t$. Suponiendo $n$ dispositivos,$a(t)$ será un vector Booleano de $n$ componentes:
 
 $$
@@ -32,22 +32,40 @@ $$
 \hat{a}(t) = \underset{a}{\text{arg min}} \left| P(t) - \sum_{i=1}^{n} a_i(t)P_i \right|
 $$
 
-Esto nos lleva a un problema computacionalmente imposible de resolver salvo mediante la fuerza bruta\autocite[4]{192069} y poco margen de mejora en el modelado para simplificar su resolución.
+Esto nos lleva a un problema computacionalmente imposible de resolver salvo mediante la fuerza bruta\autocite[4]{192069} y poco margen de mejora en el modelado para simplificar su resolución. De manera resumida, el problema trata en encontrar el número de dispositivos y el consumo de cada uno. 
+Este es un problema que se beneficia de hacer uso de modelos heurísticos.
 
+El concepto de NILM desde su introducción ha sido el método preferido por ingenieros e investigadores para la disgregación de consumo desde su introducción, debido a sus ventajas económicas y prácticas.\autocite[pág. 2, pár. 4]{Nalmpantis2019}
 
+En cuanto al origen de este método, se buscó categorizar los dispositivos dentro de tres grandes grupos, para poder estructurar los diferentes dispositivos y generalizar el modelado de dispositivos específicos. 
+Estos grupos son: 
 
+\begin{enumerate}
+\item \textbf{Señales de estados fijos} Siguen la arquitecturea de una máquina de estados finita, las transiciones entre estados son consumos exactos, al igual que los estados
+\item \textbf{Señales transitorias} Esto son señales que no se encuentran en un espacio discreto que permita modelar su comportamiento como una máquina de estados. Un ejemplo podría ser un calefactor automático, que regula su generación de calor en función de la diferencia de la temperatura ambiente y la temperatura objetivo.
+\item \textbf{Otras} Señales que no pueden categorizarse en ninguno de los dos casos anteriores. Por ejemplo, los cambios de dirección del motor de una lavadora en el proceso de lavado. 
+\end{enumerate}
+
+Cabe mencionar que los propios investigadores reconocieron que en el futuro los dispositivos eléctricos que siguiesen un diseño de máquinas de estados perderían precedencia. Ya que habría más 'dispositivos inteligentes'. Actualmente, una calefacción programable o un aire acondicionado programable están al alcance de cualquiera.
+En 2021, en España el 50\% de las viviendas en alquiler constan de aire acondicionado\autocite{idealista2021}. 
+Y esto es sólo un dispositivo. Habrá cientos de modelos de cada dispositivo, decenas de marcas, cada dispositivo con sus características específicas. Un modelado exhaustivo sería prácticamente imposible de crear y mantener, ya que sólo para el mercado doméstico hay una cantidad desorbitante de dispositivos, combinaciones de dispositivos, ect.
+Debido a estos argumentos, la investigación de la monitorización no intrusiva se inclinó a los modelos heurísiticos. De los que voy a destacar los Modelos de Markov Ocultos, el Sparse Coding y finalmente las Redes Neuronales. Siendo estas últimas el foco principal del trabajo, y de este capítulo. 
 
 \subsection{Modelos de Markov Ocultos}
 
+
 \subsection{Sparse Coding}
 
+
 \subsection{Redes Neuronales}
-
-\section{CSPNet}
-
-
-\section{Codificación GAF}
+\subsubsection{Redes Recurrentes}
+\subsubsection{Mapas de atención}
+\subsubsection{Clasificadores de imágenes}
 
 
-\section{NILMTK}
+\section{Teoría detrás de la propuesta}
+\subsection{Dataset PLAID}
+\subsection{CSPNet} 
+\subsection{Codificación GAF} 
+\subsection{Validación de Modelos: NILMTK}  
 
