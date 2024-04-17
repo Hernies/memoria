@@ -48,10 +48,31 @@ Estos grupos son:
 
 Cabe mencionar que los propios investigadores reconocieron que en el futuro los dispositivos eléctricos que siguiesen un diseño de máquinas de estados perderían precedencia. Ya que habría más 'dispositivos inteligentes'. Actualmente, una calefacción programable o un aire acondicionado programable están al alcance de cualquiera.
 En 2021, en España el 50\% de las viviendas en alquiler constan de aire acondicionado\autocite{idealista2021}. 
-Y esto es sólo un dispositivo. Habrá cientos de modelos de cada dispositivo, decenas de marcas, cada dispositivo con sus características específicas. Un modelado exhaustivo sería prácticamente imposible de crear y mantener, ya que sólo para el mercado doméstico hay una cantidad desorbitante de dispositivos, combinaciones de dispositivos, ect.
+
+Y esto es sólo un dispositivo. Habrá cientos de modelos de cada dispositivo, decenas de marcas, cada dispositivo con sus características específicas. 
+Un modelado exhaustivo sería prácticamente imposible de crear y mantener, ya que sólo para el mercado doméstico hay una cantidad desorbitante de dispositivos, combinaciones de dispositivos, ect.
+
+
 Debido a estos argumentos, la investigación de la monitorización no intrusiva se inclinó a los modelos heurísiticos. De los que voy a destacar los Modelos de Markov Ocultos, el Sparse Coding y finalmente las Redes Neuronales. Siendo estas últimas el foco principal del trabajo, y de este capítulo. 
 
 \subsection{Modelos de Markov Ocultos}
+Si se sabe la teoría detrás de una cadena de markov, los modelos de Markov Ocultos resultan una dirección intuitiva a tomar, ya que estos representan la probabilidad de transición de un estado a otro. 
+\subsubsection{La Cadena de Markov}
+Formalmente, una cadena de Markov se representa por los siguientes componentes:
+\begin{center}
+    \begin{itemize}
+        \item Un conjunto $Q$ de $N$ estados: $$Q = q_1q_2...q_n$$
+        \item Una matriz de probabilidad de transición $A$ donde para cada $a_{ij}$ representando la probabilidad de transicionar desde el estado $j$ al estado $i$. $$A=a_{11}a_{12}...a_{N1}...a_{NN}$$ 
+        {\footnotesize Cumpliendo $A$ la propiedad: $\sum_{j=1}^n a_{ij} \forall{i}$}
+        \item Una distribución de probabilidad inicial $\pi$ sobre los estados. Siendo $\pi_i$ la probabilidad de que la cadena de Markov comience en el estado $i$. $$\pi=\pi_1,\pi_2, ...,\pi_N$$ 
+        {\footnotesize Si un estado $j$ tuviera $\pi_j=0$ no podría ser un estado inicial (teniendo probabilidad $0$).\linebreak Además,$\pi$ debe cumplir $\sum_{i=1}^N \pi_i = 1$}
+    \end{itemize} 
+    \autocite{markovStandford}
+\end{center}
+
+
+\subsubsection{Identificando Datos Ocultos Con Cadenas de Markov}
+Una cadena de Markov resulta útil cuando tenemos que modelar un comportamiento en base a una secuencia de eventos observables. El problema, como en NILM, es que los eventos no son directamente observables. Estan \textit{ocultos} y por tanto debemos ajustar la  cadena para incluir una secuencia de posibles similitudes observadas. Para un elemenot $i$ se expresa como $b_i(\theta_t)$ donde $\theta$ es derivado de un conjunto de posibles valores observables $V$
 
 
 \subsection{Sparse Coding}
