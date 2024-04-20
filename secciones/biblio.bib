@@ -1,3 +1,10 @@
+@online{stanfordSparse,
+  author = {Stanford University},
+  title = {Sparse Coding},
+  url = {http://ufldl.stanford.edu/tutorial/unsupervised/SparseCoding/},
+  note = {Accessed: 2024-04-20}
+}
+
 @online{recomendaciones,
   author = {ETSIINF},
   title = {Recomendaciones sobre el contenido de la Memoria Final},
@@ -14,6 +21,7 @@
   urldate = {2023-06-01}
 }
 
+
 @ARTICLE{192069,
   author={Hart, G.W.},
   journal={Proceedings of the IEEE}, 
@@ -23,7 +31,8 @@
   number={12},
   pages={1870-1891},
   keywords={Home appliances;Monitoring;Energy consumption;Turning;Voltage;Current measurement;Energy measurement;Power measurement;Electric variables measurement;Load modeling},
-  doi={10.1109/5.192069}}
+  doi={10.1109/5.192069}
+}
 
 @book{markovStandford,
   title        = {Speech and Language Processing},
@@ -49,6 +58,7 @@
   year =         2006,
   publisher =    {Prentice Hall}
 }
+
 @misc{energyeurope, 		
 	url={https://ec.europa.eu/eurostat/web/interactive-publications/energy-2024#about-publication}, 
 	title={Shedding light on energy in Europe - 2024 edition - Eurostat},
@@ -70,14 +80,9 @@
   issn          = {1573-7462}
 }
 
-}
+
 @article{CSPNetOG,
-	author       = {Chien{-}Yao Wang and
-	Hong{-}Yuan Mark Liao and
-	I{-}Hau Yeh and
-	Yueh{-}Hua Wu and
-	Ping{-}Yang Chen and
-	Jun{-}Wei Hsieh},
+	author       = {Chien{-}Yao Wang andHong{-}Yuan Mark Liao andI{-}Hau Yeh andYueh{-}Hua Wu andPing{-}Yang Chen andJun{-}Wei Hsieh},
 	title        = {CSPNet: {A} New Backbone that can Enhance Learning Capability of {CNN}},
 	journal      = {CoRR},
 	volume       = {abs/1911.11929},
@@ -90,7 +95,21 @@
 	bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
 
-@article{NILMreview,
+@inproceedings{frenchHMMNILM,
+  TITLE = {{Non-Intrusive Load Monitoring of Single and Aggregated Profiles with a Hidden Markov Model}},
+  AUTHOR = {Miquey, Nad{\`e}ge and Grover-Silva, Etta},
+  URL = {https://minesparis-psl.hal.science/hal-03520223},
+  BOOKTITLE = {{ENERGY 2021}},
+  ADDRESS = {Valencia, Spain},
+  YEAR = {2021},
+  MONTH = May,
+  KEYWORDS = {load monitoring ; machine learning ; disaggregation ; energy efficiency},
+  PDF = {https://minesparis-psl.hal.science/hal-03520223/file/30020_appliance_classification.pdf},
+  HAL_ID = {hal-03520223},
+  HAL_VERSION = {v1},
+}
+
+@article{NILMreview2018,
   author       = {Christoph Klemenjak and
                   Peter Goldsborough},
   title        = {Non-Intrusive Load Monitoring: {A} Review and Outlook},
@@ -104,6 +123,43 @@
   biburl       = {https://dblp.org/rec/journals/corr/KlemenjakG16.bib},
   bibsource    = {dblp computer science bibliography, https://dblp.org}
 }
+
+@article{NILMreview2017,
+  author       = {Anthony Faustine and
+                  Nerey Henry Mvungi and
+                  Shubi Felix Kaijage and
+                  Michael Kisangiri},
+  title        = {A Survey on Non-Intrusive Load Monitoring Methodies and Techniques
+                  for Energy Disaggregation Problem},
+  journal      = {CoRR},
+  volume       = {abs/1703.00785},
+  year         = {2017}
+}
+
+@post{postcarbonelectricidad,
+author = {Romero Mora, José Carlos},
+year = {2014},
+month = {12},
+title = {Anyone know a scientific reference about converting kwh electricity to CO2 emission?}
+}
+
+@inproceedings{afmap2012,
+  title = 	 {Approximate Inference in Additive Factorial HMMs with Application to Energy Disaggregation},
+  author = 	 {Kolter, J. Zico and Jaakkola, Tommi},
+  booktitle = 	 {Proceedings of the Fifteenth International Conference on Artificial Intelligence and Statistics},
+  pages = 	 {1472--1482},
+  year = 	 {2012},
+  editor = 	 {Lawrence, Neil D. and Girolami, Mark},
+  volume = 	 {22},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {La Palma, Canary Islands},
+  month = 	 {04},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v22/zico12/zico12.pdf},
+  url = 	 {https://proceedings.mlr.press/v22/zico12.html},
+  abstract = 	 {This paper considers additive factorial hidden Markov models, an extension to HMMs where the state factors into multiple independent chains, and the output is an additive function of all the hidden states.  Although such models are very powerful, accurate inference is unfortunately difficult: exact inference is not computationally tractable, and existing approximate inference techniques are highly susceptible to local optima.  In this paper we propose an alternative inference method for such models, which exploits their additive structure by 1) looking at the observed difference signal of the observation, 2) incorporating a “robust” mixture component that can account for unmodeled observations, and 3) constraining the posterior to allow at most one hidden state to change at a time.  Combining these elements we develop a convex formulation of approximate inference that is computationally efficient, has no issues of local optima, and which performs much better than existing approaches in practice.  The method is motivated by the problem of energy disaggregation, the task of taking a whole home electricity signal and decomposing it into its component appliances; applied to this task, our algorithm achieves state-of-the-art performance, and is able to separate many appliances almost perfectly using just the total aggregate signal.}
+}
+
 @inproceedings{nilmstateoftheart,
 	author = {Revuelta Herrero, Jorge and Lozano Murciego, Álvaro and Barriuso, Alberto and Hernández de la Iglesia, Daniel and Villarrubia, G. and Corchado Rodríguez, Juan and Carreira, Rita},
 	year = {2018},

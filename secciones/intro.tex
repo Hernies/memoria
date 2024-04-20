@@ -5,11 +5,11 @@
 \section{Motivación y Aplicaciones}
 \label{sec:motivacionyaplicaciones}
 
-Las técnicas de Monitorización No Intrusiva de Carga (en inglés NILM o Non Intrusive Load Monitoring) extraen el consumo de electrodomésticos a partir de una curva de consumo agregada. \autocite[1]{NILMreview}. Dicho de otra forma. El monitoreo de carga no intrusivo es un sistema que infiere los consumos de diferentes dispositivos sobre una curva de consumo en la toma de corriente principal. Por ejemplo en la toma de corriente de una casa.
+Las técnicas de Monitorización No Intrusiva de Carga (en inglés NILM o Non Intrusive Load Monitoring) extraen el consumo de electrodomésticos a partir de una curva de consumo agregada. \autocite[1]{NILMreview2017}. Dicho de otra forma. El monitoreo de carga no intrusivo es un sistema que infiere los consumos de diferentes dispositivos sobre una curva de consumo en la toma de corriente principal. Por ejemplo en la toma de corriente de una casa.
 
 En Europa, un tercio de la energía eléctrica se ha generado mediante energías no renovables(12\% o 333TWh carbón, 17\% o 569TWh gas natural)\autocite{energyeurope} \autocite{ember2024european}. Aún siendo un descenso récord, para poder continuar reduciendo el consumo de energías no renovables, debemos desarrollar herramientas que nos permitan hacer un uso más inteligente de la generación de energía. Herramientas como la monitorización de carga no intrusiva pueden ayudarnos a detectar patrones de uso\autocite[11]{nilmstateoftheart}, para entonces poder desarrollar políticas que permitan optimizar la generación de energía. 
 
-\todo[inline]{estimar el ahorro en emisiones si se optimizase el consumo sólo un 2\%}
+Si, hipotéticamente, se redujese un 2\% la generación de electricidad a través de la quema de carbón, esto supondría una reducción de emisiones de 96.6 Millones de Toneladadas de CO2\footnote{$333*10^3\text{GWh}*290\dfrac{tCO_{2}}{GWh}$ \autocite{postcarbonelectricidad}}.
 
 Realizar un monitoreo de carga no intrusivo es un problema complejo. Actualmente el área de soluciones NILM se encuentra en la fase de investigación y desarrollo. Por lo tanto. Mi objetivo para este trabajo es entrenar y analizar el rendimiento de una inteligencia artificial especializada en la clasificación de imágenes, transformando los datos de entrenamiento de series temporales a imágenes. Para más detalle, dirigirse al \textbf{\autoref{ch:desarrollo}}. Quiero ver cómo modificar el enfoque al problema afecta al rendimiento de la técnica en comparación con otras técnicas del estado del arte. 
 
@@ -51,8 +51,49 @@ La memoria de esta investigación tiene los siguientes capítulos.
 \label{sec:planificacion}
 Esta sección recoge la planificación realizada y aprobada por el tutor previa al comienzo del trabajo de fin de grado. Además de la planificación modificada en la entrega de la memoria de seguimiento.
 \subsection{Planificación Original}
-
-Figura \ref{fig:boat1} muestra el diagrama de Gantt de la planificación original.
+La planificación original contiene las siguientes tareas:
+\begin{itemize}
+    \item \textbf{Dataset}
+    \begin{itemize}
+        \item Investigación Dataset - Inicio: 23-feb-2024, Fin: 27-feb-2024
+        \item Elección Dataset - Inicio: 28-feb-2024, Fin: 29-feb-2024
+        \item Descarga Dataset - Inicio: 01-mar-2024, Fin: 01-mar-2024
+        \item Listado características Dataset - Inicio: 01-mar-2024, Fin: 01-mar-2024
+        \item Limpieza de casos no válidos - Inicio: 02-mar-2024, Fin: 06-mar-2024
+    \end{itemize}
+    \item \textbf{Codificador}
+    \begin{itemize}
+        \item Formación Desarrollo Kernel GPUs - Inicio: 02-mar-2024, Fin: 09-mar-2024
+        \item Elección lenguaje de desarrollo - Inicio: 10-mar-2024, Fin: 10-mar-2024
+        \item Diseño codificador - Inicio: 11-mar-2024, Fin: 18-mar-2024
+        \item Elección entorno de codificado - Inicio: 22-mar-2024, Fin: 24-mar-2024
+        \item Preparación del entorno de desarrollo - Inicio: 22-mar-2024, Fin: 24-mar-2024
+        \item Programación Codificador - Inicio: 22-mar-2024, Fin: 31-mar-2024
+        \item Codificación - Inicio: 25-mar-2024, Fin: 01-abr-2024
+        \item Sanity Checks - Inicio: 02-abr-2024, Fin: 04-abr-2024
+    \end{itemize}
+    \item \textbf{Modelo}
+    \begin{itemize}
+        \item Instalación Darknet Framework - Inicio: 05-abr-2024, Fin: 07-abr-2024
+        \item Porting de Darknet a ZLUDA - Inicio: 08-abr-2024, Fin: 10-abr-2024
+        \item Entrenamiento modelo del 10\% de los datos - Inicio: 11-abr-2024, Fin: 11-abr-2024
+        \item Entrenamiento modelo completo - Inicio: 10-may-2024, Fin: 18-may-2024
+    \end{itemize}
+    \item \textbf{Análisis}
+    \begin{itemize}
+        \item Análisis de rendimiento del 10\% - Inicio: 12-abr-2024, Fin: 19-abr-2024
+        \item Análisis de rendimiento del modelo completo - Inicio: 19-may-2024, Fin: 26-may-2024
+        \item Investigación otros modelos - Inicio: 27-may-2024, Fin: 04-jun-2024
+        \item Comparación otros modelos - Inicio: 20-abr-2024, Fin: 26-abr-2024
+    \end{itemize}
+    \item \textbf{Memoria}
+    \begin{itemize}
+        \item Entrega seguimiento - Inicio: 30-abr-2024, Fin: 09-may-2024
+        \item Redacción seguimiento - Inicio: 20-abr-2024, Fin: 29-abr-2024
+        \item Redacción Memoria - Inicio: 31-mar-2024, Fin: 29-may-2024
+        \item Preparación Presentación - Inicio: 30-may-2024, Fin: 06-jun-2024
+    \end{itemize}
+\end{itemize}
 
 \subsection{Planificación Modificada}
 
