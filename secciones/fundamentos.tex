@@ -54,7 +54,7 @@ Y esto es sólo un dispositivo. Habrá cientos de modelos de cada dispositivo, d
 Un modelado exhaustivo sería prácticamente imposible de crear y mantener, ya que sólo para el mercado doméstico hay una cantidad desorbitante de dispositivos, combinaciones de dispositivos, ect.
 
 \subsubsection{Un ejemplo de sistema NILM}
-Un sistema NILM consta de las siguientes partes: Una fuente de datos. Un dispositivo de recogida de datos. El modelo predictivo. Y el sistema de consulta de datos.
+Un sistema NILM consta de las siguientes partes: Una fuente de datos (acometida principal). Un dispositivo de recogida de datos (puede ser de Potencia Activa Y reactiva, Voltaje e Intensidad, ect). El modelo predictivo. Y el sistema de consulta de datos, que se ha omitido en la Figura \ref{diagramaNILM}.
 \begin{figure}
     \centering
     \includegraphics[width=450px]{images/SistemaNILM.pdf}
@@ -99,6 +99,7 @@ Continuando la explicación de \autocite{markovStandford} en la subsección ante
 \end{center}
 
 Resumiendo: dados una serie de eventos observables, podemos inferir los estados que causaron estos eventos observables. Calculando la probabilidad de una cadena de eventos observables dada la probabilidad de una cadena de estados del conjunto, para todas las posibles combinaciones de la cadena los estados del conjunto. 
+\todo{Texto no definitivo, revisar}
 
 Siendo la fórmula:
 $$
@@ -137,7 +138,7 @@ Dado que un modelo de markov oculto infiere probabilísticamente una serie de es
         \end{tikzpicture}
 \end{center}
 \todo{pendiente hacer que los vértices aparezcan}%%introducir cita OG
-
+\break
 \begin{center}
     \begin{tikzpicture}
         % Define node styles
@@ -187,16 +188,30 @@ En el caso de los Modelos Factoriales de Markov Ocultos (con siglas FHMM en ingl
 La complejidad y el coste computacional de los los algoritmos de aprendizaje e inferencia son menores para los HMM. Sin embargo, tanto FHMM como HMM presentan limitaciones al volumen máximo de dispositivos simultáneos, incluso en casos como \autocite{afmap2012} donde se propone un nuevo algoritmo no supervisado. El algoritmo desarrollado (AFMAP) no presenta los problemas de alta complejidad y máximos locales, pero requiere de etiquetación manual después de la disgregación. Y presenta bajo rendimiento para dispositivos electrónicos y de cocina \autocite[5]{NILMreview2017}.
 
 \section{Redes Neuronales}
+Dado este tercer "verano de la Inteligencia Artificial" . Este tercer verano ocurre en la década de 2010. En 2012 ocurre un avance técnico, unos años antes se creó el reto ImageNet. Un repositorio de más de un millón de imágenes de objetos a lo largo de más de mil categorías diferentes. \autocite{Kautz_2022}
+Resulta lógico que el número de artículos científicos proponiendo modelos que permitiesen resolver los retos que presenta NIML aumentase. Y, encontrar
 
+En esta sección se tratan tres conceptos de las Redes Neuronales; se dará una introducción y se expondrán las aplicaciones pertinentes al tema del proyecto.
+Por motivos de brevedad, se asume que el lector tiene una cierta base en inteligencia artificial. En caso contrario, sugiero consultar las citas y el \autoref{ch:anexoa}
 \subsection{Sparse Coding}
 \subsubsection{Breve Introducción}
-\autocite{stanfordSparse}
+El Sparse Coding consiste en reducir la activación de la capa oculta de las neuronas, forzando a la red neuronal a realizar un aprendizaje \autocite{stanfordSparse}.
+Su objetivo e encontrar un conjunto de vectores $\phi_i$ tal que podamos representar un vector $x$ como una combinación lineal de estos vectores: 
+$$
+x = \sum_{i=1}^{k}a_i\phi_i
+$$
+Este es un concepto que está fuertemente relacionado con los autoencoders y el aprendizaje PCA. 
+
+Que tienen como objetivo es que su salida sea igual a la entrada, pero limitando la capa oculta para forzar un aprendizaje. \autocite{stanfordAutoEncoding}
+Por ejemplo, supongamos que buscásemos utilizar un autoencoder para comprimir una imagen para enviarla por internet. Si no implementásemos restricciones, dado que el objetivo de la red neuronal es reducir la pérdida de información a 0; la salida del autoencoder sería la imagen, completamente idéntica.
+Para evitar esto en el caso de los autoencoders se introduce una capa oculta de menor tamaño en comparación a la capa de entrada como restricción para forzar un aprendizaje, al tener una capa oculta, la capa de salida (de igual tamaño a la de entrada) debe "reconstruir" la entrada \autocite{stanfordAutoEncoding} .
+
+Volviendo al Sparse Coding. Al tener un conjunto de vectores sobrecompleto, los coeficientes $a_i$ ya no se determinan únicamente por el vector de entrada $x$. Luego se define una función de escasez\footnote{De ahí el "Sparse"; escasez en Español}. Definimos esta función de escasez como: tener los menos componentes ($a_i$) distintos de cero o el mínimo de componentes no cerca de cero.
 
 \subsubsection{Aplicaciones}
-
-\subsection{Mapas de atención}
-\subsubsection{Breve Introducción}
-\subsubsection{Aplicaciones}
+Tanto los autoencoders como el sparse coding han sido usados en la literatura NILM.
+sparse coding:\autocite{SparseCodingNILM}
+\todo[inline]{Pendiente continuar investigando}
 
 \subsection{Clasificadores de imágenes}
 \subsubsection{Breve Introducción}
