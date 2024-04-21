@@ -55,11 +55,16 @@ Un modelado exhaustivo sería prácticamente imposible de crear y mantener, ya q
 
 \subsubsection{Un ejemplo de sistema NILM}
 Un sistema NILM consta de las siguientes partes: Una fuente de datos. Un dispositivo de recogida de datos. El modelo predictivo. Y el sistema de consulta de datos.
-\todo[inline]{Diagrama de sistema NILM aquí podrá verse un diagrama que ejemplifique lo descrito} 
+\begin{figure}
+    \centering
+    \includegraphics[width=450px]{images/SistemaNILM.pdf}
+    \caption{Un diagrama simple de un sistema NILM}
+    \label{diagramaNILM}
+\end{figure}
 
 Debido a estos argumentos, la investigación de la monitorización no intrusiva se inclinó a los modelos heurísiticos. De los que voy a destacar los Modelos Ocultos de Markov, el Sparse Coding y finalmente las Redes Neuronales. Siendo estas últimas el foco principal del trabajo, y de este capítulo. 
 
-\subsection{Modelos Ocultos de Markov}
+\section{Modelos Ocultos de Markov}
 Si se sabe la teoría detrás de una cadena de markov, los modelos de Markov Ocultos resultan una dirección intuitiva a tomar, ya que estos representan la probabilidad de transición de un estado a otro. En esta subsección daremos una breve introducción a la teoría detrás de este modelo probabilístico.
 \subsubsection{La Cadena de Markov}
 Formalmente, una cadena de Markov se representa por los siguientes componentes:
@@ -100,13 +105,80 @@ $$
 \underset{O=o_1,o_2,...,o_{T}}{\text{arg max}} P (O=o_1,o_2,...,o_{T} | S=s_1,s_2,...,s_{T})
 $$
 
-Este es el modelado que nos permite inferir de manera probabilística (fórmulas en detalle podrán encontrarse en el \textbf{Anexo A})\todo{se añadirá el anexo para la entrega de la memoria final}
+Este es el modelado que nos permite inferir de manera probabilística (fórmulas en detalle podrán encontrarse en el \textbf{\autoref{ch:anexob}})\todo{se añadirá el anexo para la entrega de la memoria final}
 
 \subsubsection{Modelos Ocultos de Markov}
 Explicadas brevemente las bases de los Modelos Ocultos de Markov, pasamos a la aplicación de este modelo estadístico en la disgregación de consumos.
 
 Dado que un modelo de markov oculto infiere probabilísticamente una serie de estados, esto nos resulta útil para la disgregación de dispositivos. La forma de codificar diferentes estados de diferentes dispositivos se basa aumentando el ancho del modelo. Teniendo una matriz de estados $S_i^j$ donde $S$ es un conjunto de estados. Y las observaciones dependen de todos los estados en un momento dado. Podemos observar esto en el siguiente diagrama:
-\todo[inline]{Dos diagramas, una HMM normal y una FHMM introducir cita de el OG}
+
+\begin{center}
+    \begin{tikzpicture}
+        % Define node styles
+        \tikzset{
+            latent/.style={circle, draw, minimum size=20pt, inner sep=0pt},
+            obs/.style={rectangle, draw, minimum size=20pt, inner sep=0pt},
+        }
+        
+        % Define nodes
+        \node[latent] (s1) {$S_{t-1}$};
+        \node[latent, right=of s1] (s2) {$S_t$};
+        \node[latent, right=of s2] (s3) {$S_{t+1}$};
+        \node[obs, below=of s1] (o1) {$Y_{t-1}$};
+        \node[obs, below=of s2] (o2) {$Y_t$};
+        \node[obs, below=of s3] (o3) {$Y_{t+1}$};
+        
+        % Connect the nodes with arrows
+        \edge[->] (s1) -- (s2);
+        \draw[->] (s2) -- (s3);
+        \draw[->] (s1) -- (o1);
+        \draw[->] (s2) -- (o2);
+        \draw[->] (s3) -- (o3);
+        \end{tikzpicture}
+\end{center}
+\todo{pendiente hacer que los vértices aparezcan}%%introducir cita OG
+
+\begin{center}
+    \begin{tikzpicture}
+        % Define node styles
+        \tikzset{latent/.style={circle,draw,minimum size=20pt,inner sep=0pt},
+            obs/.style={rectangle,draw,minimum size=20pt,inner sep=0pt},
+            e/.style={line,draw, minimum width=2pt}  }
+        
+        % Define nodes
+        \node[latent]                               (s11) {$S_{t-1}^{(1)}$};
+        \node[latent, below=of s11]                 (s12) {$S_{t-1}^{(2)}$};
+        \node[latent, below=of s12]                 (s13) {$S_{t-1}^{(3)}$};
+        
+        \node[latent, right=of s11]                 (s21) {$S_t^{(1)}$};
+        \node[latent, right=of s12]                 (s22) {$S_t^{(2)}$};
+        \node[latent, right=of s13]                 (s23) {$S_t^{(3)}$};
+        
+        \node[latent, right=of s21]                 (s31) {$S_{t+1}^{(1)}$};
+        \node[latent, right=of s22]                 (s32) {$S_{t+1}^{(2)}$};
+        \node[latent, right=of s23]                 (s33) {$S_{t+1}^{(3)}$};
+        
+        \node[obs, below=of s13]                    (o1) {$Y_{t-1}$};
+        \node[obs, below=of s23]                     (o2) {$Y_t$};
+        \node[obs, below=of s33]                     (o3) {$Y_{t+1}$};
+        
+        % Connect the nodes
+        \edge [e] {s11} {s21} ; %
+        \edge [e] {s12} {s22} ; %
+        \edge [e] {s13} {s23} ; %
+        
+        \edge [e] {s21} {s31} ; %
+        \edge [e] {s22} {s32} ; %
+        \edge [e] {s23} {s33} ; %
+        
+        \edge [e] {s11,s12,s13} {o1} ; %
+        \edge [e] {s21,s22,s23} {o3} ; %
+        \edge [e] {s31,s32,s33} {o3} ; %
+    \end{tikzpicture}
+\end{center}
+
+\todo{pendiente hacer que los vértices aparezcan}%%introducir cita OG
+
 Observando el diagrama b) no resulta muy complicado imaginar la utilidad de este modelo. Si cada cadena representa un dispositivo modelado en diferentes estados, resulta un diseño muy apropiado para NILM.
 Los Modelos de Markov Ocultos se han tratado en la literatura como efectivos en comparación con otras técnicas de monitorización cuando el entrenamiento supervisado presenta una baja tasa de muestreo en el eje temporal de la obtención de datos \autocite{frenchHMMNILM}.
 Otras ventajas que presenta es su bajo coste computacional en el entrenamiento. Pero el uso de este tipo de elementos lo vuelven altamente susceptible a máximos locales\autocite{NILMreview2017}.
@@ -114,18 +186,25 @@ Otras ventajas que presenta es su bajo coste computacional en el entrenamiento. 
 En el caso de los Modelos Factoriales de Markov Ocultos (con siglas FHMM en inglés), presentan ciertas ventajas en comparación con los HMM \footnote{Hidden Markov Models, o en español los Modelos Ocultos de Markov}:
 La complejidad y el coste computacional de los los algoritmos de aprendizaje e inferencia son menores para los HMM. Sin embargo, tanto FHMM como HMM presentan limitaciones al volumen máximo de dispositivos simultáneos, incluso en casos como \autocite{afmap2012} donde se propone un nuevo algoritmo no supervisado. El algoritmo desarrollado (AFMAP) no presenta los problemas de alta complejidad y máximos locales, pero requiere de etiquetación manual después de la disgregación. Y presenta bajo rendimiento para dispositivos electrónicos y de cocina \autocite[5]{NILMreview2017}.
 
+\section{Redes Neuronales}
+
 \subsection{Sparse Coding}
 \subsubsection{Breve Introducción}
 \autocite{stanfordSparse}
 
 \subsubsection{Aplicaciones}
 
+\subsection{Mapas de atención}
+\subsubsection{Breve Introducción}
+\subsubsection{Aplicaciones}
 
-\subsection{Redes Neuronales}
-\subsubsection{Mapas de atención}
-\subsubsection{Clasificadores de imágenes}
-\subsubsection{Redes Recurrentes}
+\subsection{Clasificadores de imágenes}
+\subsubsection{Breve Introducción}
+\subsubsection{Aplicaciones}
 
+\subsection{Redes Recurrentes}
+\subsubsection{Breve Introducción}
+\subsubsection{Aplicaciones}
 
 \section{Teoría detrás de la propuesta}
 \subsection{Datasets para entrenamiento supervisado en NILM}

@@ -32,6 +32,7 @@ pdflatex tfg_etsiinf_LuisAmigo
 pdflatex tfg_etsiinf_LuisAmigo
 ```
 
+https://www.overleaf.com/learn/latex/Pgfplots_package
 ## TODO
 
 Quedan algunas cosas por mejorar en esta plantilla:
