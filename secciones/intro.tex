@@ -11,24 +11,30 @@ En Europa, un tercio de la energía eléctrica se ha generado mediante energías
 
 Si, hipotéticamente, se redujese un 2\% la generación de electricidad a través de la combustión de carbón. Supondría una reducción de emisiones de 96.6 Millones de Toneladadas de CO2\footnote{$333*10^3\text{GWh}*290\dfrac{tCO_{2}}{GWh}$ \autocite{postcarbonelectricidad}}.
 
-Realizar un monitoreo de carga no intrusivo es un problema complejo. Actualmente el área de soluciones NILM se encuentra en la fase de investigación y desarrollo. Por lo tanto. Mi objetivo para este trabajo es entrenar y analizar el rendimiento de una inteligencia artificial especializada en la clasificación de imágenes, transformando los datos de entrenamiento de series temporales a imágenes. Detallado en el \textbf{\autoref{ch:desarrollo}}. Quiero ver cómo modificar el enfoque al problema afecta al rendimiento de la técnica en comparación con otras técnicas del estado del arte. 
+Realizar un monitoreo de carga no intrusivo es un problema complejo. Actualmente el área de soluciones NILM se encuentra en la fase de investigación y desarrollo. Por lo tanto. Mi objetivo para este trabajo es entrenar y analizar el rendimiento de una inteligencia artificial especializada en la clasificación de imágenes, transformando los datos de entrenamiento de series temporales a imágenes. Detallado en el \textbf{\autoref{ch:desarrollo}}. El trabajo se centrará en cómo modificar el enfoque al problema de disgregación de consumos afecta al rendimiento de la técnica en comparación con otras técnicas del estado del arte. 
+
+Este concepto fue inventado por George W. Hart, Ed Kern y Fred Schweppe en el Instituto Tecnológico de Massachussets, en los años ochenta \autocite{192069}. Fundados por el Electric Power Research Institute, podemos encontrar el proceso básico descrito en la patente estadounidense 4,858,141.
+
+Una breve bibliografía de George W. Hart: Actualmente ejerce como escultor desde 2017. Tiene esculturas en exposición en Berkeley, Princeton, Cambridge, Duke, Brown... Cofundó el único Museo de las Matemáticas en Norteamérica y se ha retirado recientemente, trabajó en ciencia computacional, matemáticas, educación e investigación \autocite{HartBibliography}.
+
+La técnica, descrita por Hart, Kern y Schweppe en \autocite{192069} modela los consumos en lo que nombran como "Modelo Total de Carga". El modelo total de carga depende de que dispositivos estén encendidos en un momento dado. Por lo que definen un 'proceso de cambio'.
+Esto nos lleva a un problema computacionalmente imposible de resolver salvo mediante la fuerza bruta\autocite[4]{192069} y poco margen de mejora en el modelado para simplificar su resolución. De manera resumida, el problema trata en encontrar el número de dispositivos y el consumo de cada uno. 
+Este es un problema que se beneficia de hacer uso de modelos heurísticos.
 
 Siguiendo este objetivo y con el asesoramiento de Esteban García Cuesta, se decidió en hacer uso de datasets clasificados para un entrenamiento supervisado; además de una arquitectura potente, compacta y computacionalmente baja en costes de entrenamiento. 
+
+\todo[inline]{extender motivación y aplicaciones, introducir con más detalle el problema y citar más motivaciones}
+
+
 
 \section{Objetivos}
 \label{sec:objetivos}
 Previamente al comienzo del desarrollo del proyecto, se establecieron una serie de objetivos a cumplir, dividiendo el objetivo final en pasos coherentes y concretos.
-\begin{enumerate}
-	\item Investigación del problema NILM (Monitorización de Carga No Intrusiva) y soluciones actuales
-	\item Elección de dataset con el que se entrenará a la inteligencia artificial.
-	\item Análisis y calibración del dataset.
-	\item Desarrollo codificador para transformar las series de datos a imágenes siguiendo la codificación GAF
-	\item Preprocesado de dataset a través del codificador, para generar tanto las imágenes como sus etiquetas asociadas. 
-	\item Instalación darknet CSPNet, el framework que contiene a CSPNet, la inteligencia artificial que se entrenará.
-	\item Entrenamiento del modelo. Una prueba de concepto del 10\% del dataset y modelo completo, con todo el dataset dedicado a entrenamiento.
-	\item Análisis del rendimiento del modelo con NILMTK, un toolkit que facilita la comparación del rendimiento con otros modelos. 
-	\item Comparación del rendimiento con otros modelos
-\end{enumerate}
+En esta sección se detallan los objetivos de aprendizaje e investigación:
+
+Este trabajo busca investigar sobre las técnicas más actuales en NILM\footnote{ver \autoref{ch:anexoa}}. Dando al lector una base de las técnicas utilizadas en el estado del arte y las matemáticas detrás de estas técnicas.
+Los objetivos de aprendizaje son extensos, el trabajo busca además profundizar en la práctica detrás de el entrenamiento de una inteligencia artificial y de los retos que presenta el uso de la computación paralela, bases de datos, GPUs, lenguajes de bajo nivel (C++, OpenCL) y el uso de frameworks de creación, entrenamiento y análisis del rendimiento de la inteligencia artificial.
+
 
 \section{Alcance del proyecto}
 \label{sec:alcanceproyecto}
@@ -41,106 +47,11 @@ La memoria de esta investigación tiene los siguientes capítulos.
 	\item \textbf{Introducción: } Se introduce el tema, sus potenciales aplicaciones, motivación, alcance... 
 	\item \textbf{Fundamentos y Panorama Actual: } Este capítulo sirve para dar al lector una base de la teoría detrás de la tecnología, algoritmos y conceptos sobre los que se desarrolla el trabajo de fin de grado. Además de informar sobre el estado del arte en el área.
 	\item \textbf{Desarrollo: } En este capítulo se detallan los pasos tomados para el desarrollo del modelo y las herramientas que utiliza. Entrenamiento, codificación, evaluación del modelo, etc. 
-	\item \textbf{Análisis de Impacto: } Este apartado recoge los resultados del modelo. Se compara su rendimiento con otros modelos y se habla brevemente del funcionamiento de los modelos contra los que se compara.
+	\item \textbf{Resultados y Análisis de Impacto: } Este apartado recoge los resultados del modelo y se compara su rendimiento con otros modelos. Además recoge el análisis del impacto del modelo conforme a los Objetivos de Desarrollo Sostenible de la Agenda 2030.
 	\item \textbf{Conclusiones y Trabajo Futuro: } En este capítulo se recogen las conclusiones del trabajo y el trabajo futuro que puede hacerse para mejorar el modelo y sus partes. 
 	\item \textbf{Bibliografía: } Se recogen todos los recursos bibliográficos citados durante el transcurso de la investigación.
 	\item \textbf{Anexo: } Detalla código e información de interés que no tiene cabida en el cuerpo del texto. 
 \end{itemize}
 
-\section{Planificación}
-\label{sec:planificacion}
-Esta sección recoge la planificación realizada y aprobada por el tutor previa al comienzo del trabajo de fin de grado. Además de la planificación modificada en la entrega de la memoria de seguimiento.
-\subsection{Planificación Original}
-La planificación original contiene las siguientes tareas:
-\begin{itemize}
-    \item \textbf{Dataset}
-    \begin{itemize}
-        \item Investigación Dataset - Inicio: 23-feb-2024, Fin: 27-feb-2024
-        \item Elección Dataset - Inicio: 28-feb-2024, Fin: 29-feb-2024
-        \item Descarga Dataset - Inicio: 01-mar-2024, Fin: 01-mar-2024
-        \item Listado características Dataset - Inicio: 01-mar-2024, Fin: 01-mar-2024
-        \item Limpieza de casos no válidos - Inicio: 02-mar-2024, Fin: 06-mar-2024
-    \end{itemize}
-    \item \textbf{Codificador}
-    \begin{itemize}
-        \item Formación Desarrollo Kernel GPUs - Inicio: 02-mar-2024, Fin: 09-mar-2024
-        \item Elección lenguaje de desarrollo - Inicio: 10-mar-2024, Fin: 10-mar-2024
-        \item Diseño codificador - Inicio: 11-mar-2024, Fin: 18-mar-2024
-        \item Elección entorno de codificado - Inicio: 22-mar-2024, Fin: 24-mar-2024
-        \item Preparación del entorno de desarrollo - Inicio: 22-mar-2024, Fin: 24-mar-2024
-        \item Programación Codificador - Inicio: 22-mar-2024, Fin: 31-mar-2024
-        \item Codificación - Inicio: 25-mar-2024, Fin: 01-abr-2024
-        \item Sanity Checks - Inicio: 02-abr-2024, Fin: 04-abr-2024
-    \end{itemize}
-    \item \textbf{Modelo}
-    \begin{itemize}
-        \item Instalación Darknet Framework - Inicio: 05-abr-2024, Fin: 07-abr-2024
-        \item Porting de Darknet a ZLUDA - Inicio: 08-abr-2024, Fin: 10-abr-2024
-        \item Entrenamiento modelo del 10\% de los datos - Inicio: 11-abr-2024, Fin: 11-abr-2024
-        \item Entrenamiento modelo completo - Inicio: 10-may-2024, Fin: 18-may-2024
-    \end{itemize}
-    \item \textbf{Análisis}
-    \begin{itemize}
-        \item Análisis de rendimiento del 10\% - Inicio: 12-abr-2024, Fin: 19-abr-2024
-        \item Análisis de rendimiento del modelo completo - Inicio: 19-may-2024, Fin: 26-may-2024
-        \item Investigación otros modelos - Inicio: 27-may-2024, Fin: 04-jun-2024
-        \item Comparación otros modelos - Inicio: 20-abr-2024, Fin: 26-abr-2024
-    \end{itemize}
-    \item \textbf{Memoria}
-    \begin{itemize}
-        \item Entrega seguimiento - Inicio: 30-abr-2024, Fin: 09-may-2024
-        \item Redacción seguimiento - Inicio: 20-abr-2024, Fin: 29-abr-2024
-        \item Redacción Memoria - Inicio: 31-mar-2024, Fin: 29-may-2024
-        \item Preparación Presentación - Inicio: 30-may-2024, Fin: 06-jun-2024
-    \end{itemize}
-\end{itemize}
 
-\subsection{Planificación Modificada}
-La planificación tuvo que modificarse. Las causas son una combinación de motivos externos y una perspectiva algo ingenua del tiempo que iba a ser necesario para realizar tanto la memoria como una serie de tareas.
-Lo primero que se ha hecho ha sido borrar todas las subtareas pertinentes al modelo del 10\%; estas tareas se refieren a un modelo entrenado con el 10\% de los datos, una pequeña prueba de concepto.
-El principal motivo para estas modificaciones ha sido la dificultad para programar un codificador en C++ y OpenCL, debido a la curva de dificultad que representa aprender un lenguaje para una nueva arquitectura y los retos que presenta interactuar con una base de datos con un motor relativamente lento.
-El segundo motivo, que no busca excusar el retraso en los objetivos, si no dar una clara representación de los hechos. Es debido a mi contrato laboral a tiempo completo, que me resta gran parte del día, limitando el tiempo y energía que puedo dedicarle a este trabajo. 
-Sin embargo, espero que el lector pueda apreciar que mi compromiso sigue siendo serio. Abajo puede observarse la lista de tareas y subtareas a partir de la cual se genera el diagrama de Gantt.
-Por último, se han corregido algunas fechas que: no cuadraban con las fechas de entrega, no cuadran con el trabajo realizado.
 
-\begin{itemize}
-    \item \textbf{Dataset}
-    \begin{itemize}
-        \item Investigación Dataset - Inicio: 23-feb-2024, Fin: 27-feb-2024
-        \item Elección Dataset - Inicio: 28-feb-2024, Fin: 29-feb-2024
-        \item Descarga Dataset - Inicio: 01-mar-2024, Fin: 01-mar-2024
-        \item Listado características Dataset - Inicio: 01-mar-2024, Fin: 01-mar-2024
-        \item Limpieza de casos no válidos - Inicio: 02-mar-2024, Fin: 06-mar-2024
-        \item Parseo de dataset a BBDD - 06-mar-2024
-    \end{itemize}
-    \item \textbf{Codificador}
-    \begin{itemize}
-        \item Formación Desarrollo Kernel GPUs - Inicio: 02-mar-2024, Fin: 09-mar-2024
-        \item Elección lenguaje de desarrollo - Inicio: 10-mar-2024, Fin: 10-mar-2024
-        \item Diseño codificador - Inicio: 11-mar-2024, Fin: 18-mar-2024
-        \item Elección entorno de codificado - Inicio: 22-mar-2024, Fin: 24-mar-2024
-        \item Preparación del entorno de desarrollo - Inicio: 22-mar-2024, Fin: 24-mar-2024
-        \item Programación Codificador - Inicio: 22-mar-2024, Fin: 30-abr-2024
-        \item Codificación - Inicio: 30-abr-2024, Fin: 10-may-2024
-        \item Sanity Checks - Inicio: 30-abr-2024, Fin: 12-may-2024
-    \end{itemize}
-    \item \textbf{Modelo}
-    \begin{itemize}
-        \item Instalación Darknet Framework - Inicio: 05-abr-2024, Fin: 07-abr-2024
-        \item Porting de Darknet a ZLUDA - Inicio: 08-abr-2024, Fin: 10-abr-2024
-        \item Entrenamiento modelo completo - Inicio: 12-may-2024, Fin: 18-may-2024
-    \end{itemize}
-    \item \textbf{Análisis}
-    \begin{itemize}
-        \item Análisis de rendimiento del modelo completo - Inicio: 19-may-2024, Fin: 26-may-2024
-        \item Investigación otros modelos - Inicio: 08-abr-2024, Fin: 14-may-2024
-        \item Comparación otros modelos - Inicio: 20-abr-2024, Fin: 26-abr-2024
-    \end{itemize}
-    \item \textbf{Memoria}
-    \begin{itemize}
-        \item Entrega seguimiento - Inicio: 21-abr-2024, Fin: 21-may-2024
-        \item Redacción seguimiento - Inicio: 01-abr-2024, Fin: 21-abr-2024
-        \item Redacción Memoria - Inicio: 08-abr-2024, Fin: 03-may-2024
-        \item Preparación Presentación - Inicio: 03-jun-2024, Fin: 10-jun-2024
-    \end{itemize}
-\end{itemize}
