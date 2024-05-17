@@ -1,26 +1,86 @@
 \chapter{Desarrollo}
 \label{ch:desarrollo}
-\todo[inline]{TODOS LOS DIAGRAMAS SE HARAN CON MIRO, EXPORTADOS A SVG E INTEGRADOS}
+\todo[inline]{Hablar del repo de desarrollo del tfg, su estructura}
+
 
 \section{Planificación}
 \label{sec:planificacion}
 Se realizó dos tandas de organización y planificación de tareas. La primera al principio del semestre y la segunda a mediados de abril. 
 Las dificultades en la planificación fueron una combinación de motivos externos y una perspectiva algo ingenua del tiempo a invertir y el ritmo de progreso.
-Debido a la falta de conocimientos, se ha dedicado un tiempo considerable (unas 60-80 horas) a realizar investigación y estudio, para poder comprender las técnicas  en el estado del arte y en lo 
+Debido a la falta de conocimientos, se ha dedicado un tiempo considerable (unas 60-80 horas) a realizar investigación y estudio, para poder comprender las técnicas y modelos implementados el estado del arte.
+
+En lo que respecta al desarrollo, se han dedicado unas 80-100 horas.
 
 Los principales problemas fueron: la dificultad para programar un codificador en C++ y OpenCL, debido a la curva de dificultad que representa aprender un lenguaje para una nueva arquitectura y los retos que presenta la gran cantidad de datos usada para el entrenamiento de inteligencia artificial. 
 
 
 \section{REFIT Dataset}
-\subsection{Pros y contras del dataset}
+Tras una investigación de los potenicales datasets, se decidió usar como dataset REFIT. El nombre completo del dataset es "Personalised Retrofit Decision Support Tools For UK Homes Using Smart Home Technology"\autocite{REFIT}.
 \subsection{Características principales}
-\subsection{Recogida de datos}
-\todo[inline]{Hablar de REFIT, sus características, los datos y los metadatos. Especial hincapié en cómo se recogieron}
+Puede encontrarse todo el detalle sobre el dataset en \autocite{REFIT}.
+
+El dataset recoge datos de 20 casas durante un periodo continuo de dos años, con un periodo de medición superior a un minuto entre mediciones para todas las casas. Siendo este el único dataset de Gran Bretaña con estas características.
+Se miden 9 dispositivos además del consumo agregado. Todas las mediciones se realizaron en vatios. 
+
+\todo[inline]{aqui va la infraestructura de medición}
+
+El dataset ocupa unos 5GB de memoria, se presentan todas las mediciones de una sola casa en archivos CSV. Siguiendo la distribución:
+\begin{center}
+    Time, Unix, Aggregate, Appliance1, ... , Appliance9, Issues
+\end{center}
+Habiendo 21 archivos en total que recogen datos, y un vigésimo segundo archivo conteniendo los metadatos de cada casa. Estos metadatos se limitan a especificar el tipo de dispositivo asociado al dispositivo o \textit{Appliance} 
+\todo[inline]{añadir unas líneas de una casa y una y sus metadatos}
+
+En cuanto a la recogida de datos, se definió un periodo de recogida de datos de ocho segundos. Por tanto los datos se recogieron con un desplazamiento temporal. Esto quiere decir que los datos de los dispositivos y el agregado no coinciden exactamente en el tiempo, habiendo una diferencia de unos segundos entre dispositivo y dispositvo. El acumulado (o agregado) se calculaba antes de que finalizase el periodo de ocho segundos.
+
+
+\subsection{Pros y contras del dataset}
+
+Las ventajas de este dataset son, su longitud en el tiempo y la facilidad de empezar a hacer un uso de los mismos. Ya que se busca investigar sobre la viabilidad de un modelo que haga uso de clasificadores de imágenes, esto habilita la posibilidad de realizar un trabajo de fin de grado con este tema. 
+
+Hay una serie de problemas conocidos sobre el dataset. En la publicación asociada se mencionan los siguientes:
+\begin{itemize}
+    \item Ocasionalmente los medidores de dispositivos reportaban consumos muy por encima de de la carga máxima para un dispositivo de uso doméstico. Estas medidas se eliminaron del dataset.
+    \item Hubo problemas con la sincronización temporal de los medidores de dispositivos. Esto conlleva discrepancias entre el agregado y las mediciones.
+    \item Las mediciones del acumulado en casas 3, 11 y 21 se vieron afectadas debido a que los domicilios contaban con paneles solares, y recablear para evitar afectar a las medidas del acumulado no era posible.
+    \item En algunos casos,los valores entre acumulado y dispositivos no coinciden debido a que no se monitorizaron otras variables para ajustar estas medidas conforme el ángulo de fase o el voltaje por cargas inductivas o capacitivas.
+\end{itemize}
+
+Debido a estos problemas, los datos de las casas 3, 11 y 21 no serán utilizados. Además, debido a falta de clasificación en los metadatos, las casas \todo{poner las casas que no dan datos} tampoco fueron utilizados para el entrenamiento.
 
 \section{Parseado de REFIT a MYSQL}
-\subsection{Motivación}
+Como primer paso, se decidió parsear todos los datos a una BBDD, escogiendo MYSQL como plataforma, para tener una lógica de acceso que permitiese ordenar los datos para su codificación conforme a diferentes algoritmos (secuencial, k-means) para poder extraer la mayor cantidad de características sobre los dispositivos en diferentes marcos temporales.
+
 \subsection{Inconvenientes}
-\subsection{Solución}
+La inserción de datos en la base de datos fue tremendamente lenta. Para insertar un CSV entero, se tardaba en el peor de los casos cerca de las 72h de inserción continuada.
+En parte esto se debe a que se mantuvo durante un tiempo la configuración del servidor MYSQL \textit{out of the box} sin realizar ningún cambio.
+Más adelante se investigó cómo poder optimizar las inserciones, pero no se consiguió ninguna mejora destacable. A posteriori, podría haberse investigado utilizar otra herramienta que no requiriese de insertar por fuerza bruta.
+
+\subsection{Modelo de la BBDD}
+Para este paso del desarrollo, se decidió un modelo simple, imitando la presentación de los datos en el csv.
+\todo{aquí modelo de la base de datos en su primer modelo}
+
+\subsection{Herramientas desarrolladas}
+Para la inserción, se diseñaron dos programas en C++. Haciendo uso de la librería de conector de C++ a mysql. Se seleccionaba el archivo manualmente y comenzaba la inserción. 
+Una vez iniciada la inserción de datos, esta se paraba en la misma fecha, el 31 de marzo. Esto se debía a que al insertar la fecha, habiendo un cambio de hora esa madrugada, las fechas no coincidían con las esperadas.
+
+La solución a este problema fue desarrollar un programa que permitiese saltar a la línea donde daba el fallo, además de una serie de herramientas para "debuggear" la inserción de datos, pudiendo saltar a una línea específica e insertar manualmente o continuar la inserción.
+\todo[inline]{aquí una demonstración de la herramienta}
+
+Además de desarrollar el programa, se cambió la configuración de fechas en el servidor MYSQL. 
+
+\begin{lstlisting}[language=SQL,frame=ltrb,framesep=5pt,basicstyle=\normalsize,
+    keywordstyle=\ttfamily\color{OliveGreen},
+    identifierstyle=\ttfamily\color{CadetBlue}\bfseries, 
+    commentstyle=\color{Brown},
+    stringstyle=\ttfamily,
+    showstringspaces=true]
+    SELECT @@global.time_zone, @@session.time_zone;
+    SET GLOBAL time_zone = '+00:00';
+    SET SESSION time_zone = '+00:00';
+\end{lstlisting}
+
+\todo[inline]{Donde está este programa en el directorio? }
 \todo[inline]{Hablar de porqué lo parseamos a mysql, los inconvenientes (zona horaria e interrupciones en el parseo) y el diseño realizado para resolver estos problemas, además de los programas desarrollados (el primero que se rompía y el segundo que es traversecsv.cpp) }
 
 \section{Codificación GAF}
@@ -28,6 +88,7 @@ Los principales problemas fueron: la dificultad para programar un codificador en
 \subsection{Inconvenientes}
 \subsection{Solución}
 \todo[inline]{Hablar de porqué se decidió usar opencl, porqué se retrasó tanto esta parte del proyecto el diseño que era muy bueno pero muy complicado de implementar}
+\todo[inline]{Hablar de porqué al final se hace todo con la cpu, que branches del desarrollo tuvieron que abandonarse/dejarse sin terminar}
 
 
 \section{Entrenamiento}
