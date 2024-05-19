@@ -22,7 +22,7 @@ En 2021, en España el 50\% de las viviendas en alquiler constan de aire acondic
 Y esto es sólo un dispositivo. Habrá cientos de modelos de cada dispositivo, decenas de marcas, cada dispositivo con sus características específicas. 
 Un modelado exhaustivo sería prácticamente imposible de crear y mantener, ya que sólo para el mercado doméstico hay una cantidad desorbitante de dispositivos, combinaciones de dispositivos, etc.
 
-\subsubetcion{Un ejemplo de sistema NILM}
+\subsubsection{Un ejemplo de sistema NILM}
 Un sistema NILM consta de las siguientes partes: Una fuente de datos (acometida principal). Un dispositivo de recogida de datos (puede ser de Potencia Activa Y reactiva, Voltaje e Intensidad, etc). El modelo predictivo. Y el sistema de consulta de datos, que se ha omitido en la Figura \ref{diagramaNILM}.
 \begin{figure}
     \centering
@@ -37,8 +37,8 @@ Debido a estos argumentos, la investigación de la monitorización no intrusiva 
 
 \section{Aprendizaje Automático}
 
-En la Historia de la Inteligencia Artificial, se han definido una serie de etapas de gran crecimiento y financiación como "veranos" (tres concretamente). Alternados por (dos) "inviernos"; donde el interés, la financiación y el número de publicaciones decrecían significativamente \autocite{briefAIHistory}.
-En los principios de la década de los 2010, comenzó el tercer "verano" de la Inteligencia Artificial. En 2012 ocurre un avance técnico: unos años antes, Olga Russakovsky creó el reto ImageNet \autocite{ImageNetRussakovsky}; un repositorio de más de un millón de imágenes de objetos a lo largo de más de mil categorías diferentes. 
+En la Historia de la Inteligencia Artificial, se han definido una serie de etapas de gran crecimiento y financiación como  \foreignquote{spanish}{veranos} (tres concretamente). Alternados por (dos) \foreignquote{spanish}{inviernos}; donde el interés, la financiación y el número de publicaciones decrecían significativamente \autocite{briefAIHistory}.
+En los principios de la década de los 2010, comenzó el tercer \enquote{verano" de la Inteligencia Artificial. En 2012 ocurre un avance técnico: unos años antes, Olga Russakovsky creó el reto ImageNet \autocite{ImageNetRussakovsky}; un repositorio de más de un millón de imágenes de objetos a lo largo de más de mil categorías diferentes. 
 Este reto estimuló a la comunidad científica, 
 
 Resulta lógico que el número de artículos científicos proponiendo modelos que permitiesen resolver los retos que presenta NIML aumentase.
@@ -57,7 +57,7 @@ Formalmente, una cadena de Markov se representa por los siguientes componentes:
         {\footnotesize Cumpliendo $A$ la propiedad: $\sum_{j=1}^n a_{ij} \forall{i}$}
         \item Una distribución de probabilidad inicial $\pi$ sobre los est
         ados. Siendo $\pi_i$ la probabilidad de que la cadena de Markov comience en el estado $i$. $$\pi=\pi_1,\pi_2, ...,\pi_N$$ 
-        {\footnotesiz Si un estado $j$ tuviera $\pi_j=0$ no podría ser un estado inicial (teniendo probabilidad $0$).\linebreak Además,$\pi$ debe cumplir $\sum_{i=1}^N \pi_i = 1$}
+        {\footnotesize Si un estado $j$ tuviera $\pi_j=0$ no podría ser un estado inicial (teniendo probabilidad $0$).\linebreak Además,$\pi$ debe cumplir $\sum_{i=1}^N \pi_i = 1$}
     \end{itemize} 
     \autocite{markovStandford}
 \end{center}
@@ -85,7 +85,7 @@ Resumiendo: dados una serie de eventos observables, podemos inferir la probabili
 Este algoritmo se conoce algoritmo de Viterbi.
 Siendo la fórmula:
 $$
-\autocite{markovStandford} \underset{O=o_1,o_2,...,o_{T}}{\text{arg max}} P (O=o_1,o_2,...,o_{T} | S=s_1,s_2,...,s_{T}) 
+\text{\autocite{markovStandford}} \underset{O=o_1,o_2,...,o_{T}}{\text{arg max}} P (O=o_1,o_2,...,o_{T} | S=s_1,s_2,...,s_{T}) 
 $$
 
 Este es el modelado que nos permite inferir de manera probabilística (fórmulas en detalle podrán encontrarse en el \textbf{\autoref{ch:anexob}})\todo{se añadirá el anexo para la entrega de la memoria final}
@@ -135,7 +135,7 @@ sparse coding:\autocite{SparseCodingNILM}
 \subsection{Redes Recurrentes}
 
 
-\section{}
+\section{SOTA}
 \subsection{CSPNet}     
 \subsection{Codificación GAF} 
 \subsection{Validación de Modelos: NILMTK}  
