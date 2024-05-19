@@ -15,14 +15,19 @@ Los principales problemas fueron: la dificultad para programar un codificador en
 
 
 \section{REFIT Dataset}
-Tras una investigación de los potenicales datasets, se decidió usar como dataset REFIT. El nombre completo del dataset es "Personalised Retrofit Decision Support Tools For UK Homes Using Smart Home Technology"\autocite{REFIT}.
+Tras una investigación de los potenicales datasets, se decidió usar como dataset REFIT. El nombre completo del dataset es \enquote{Personalised Retrofit Decision Support Tools For UK Homes Using Smart Home Technology}\autocite{REFIT}.
 \subsection{Características principales}
 Puede encontrarse todo el detalle sobre el dataset en \autocite{REFIT}.
 
 El dataset recoge datos de 20 casas durante un periodo continuo de dos años, con un periodo de medición superior a un minuto entre mediciones para todas las casas. Siendo este el único dataset de Gran Bretaña con estas características.
 Se miden 9 dispositivos además del consumo agregado. Todas las mediciones se realizaron en vatios. 
 
-\todo[inline]{aqui va la infraestructura de medición}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=250px]{images/REFITmodeloDatos.png}
+    \caption{El modelo de recolección de datos (propiedad de \autocite{REFIT})}
+    \label{diagramaBBDD}
+\end{figure}
 
 El dataset ocupa unos 5GB de memoria, se presentan todas las mediciones de una sola casa en archivos CSV. Siguiendo la distribución:
 \begin{center}
@@ -58,37 +63,56 @@ Más adelante se investigó cómo poder optimizar las inserciones, pero no se co
 
 \subsection{Modelo de la BBDD}
 Para este paso del desarrollo, se decidió un modelo simple, imitando la presentación de los datos en el csv.
-\todo{aquí modelo de la base de datos en su primer modelo}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=250px]{images/db_parsingstep.png}
+    \caption{El modelo de la BBDD en el parseo}
+    \label{diagramaBBDD}
+\end{figure}
 
 \subsection{Herramientas desarrolladas}
 Para la inserción, se diseñaron dos programas en C++. Haciendo uso de la librería de conector de C++ a mysql. Se seleccionaba el archivo manualmente y comenzaba la inserción. 
 Una vez iniciada la inserción de datos, esta se paraba en la misma fecha, el 31 de marzo. Esto se debía a que al insertar la fecha, habiendo un cambio de hora esa madrugada, las fechas no coincidían con las esperadas.
 
-La solución a este problema fue desarrollar un programa que permitiese saltar a la línea donde daba el fallo, además de una serie de herramientas para "debuggear" la inserción de datos, pudiendo saltar a una línea específica e insertar manualmente o continuar la inserción.
-\todo[inline]{aquí una demonstración de la herramienta}
+La solución a este problema fue desarrollar un programa que permitiese saltar a la línea donde daba el fallo, además de una serie de herramientas para \enquote{debuggear} la inserción de datos, pudiendo saltar a una línea específica e insertar manualmente o continuar la inserción.
+
+Podemos observar el comportamiento de la herramienta, llamada sin argumentos:
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor=\color{lightgray}]
+    $ ./traversecsv 
+    Usage: ./traversecsv <file> <house_id>
+\end{lstlisting}
+
+Y llamada con argumentos
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor=\color{lightgray}]
+$ ./traversecsv CLEAN_REFIT_081116/CLEAN_House15.csv 15
+    
+Successfully connected to the database!
+    Total lines in file: 6225697
+    Press 'p' to print the next line 
+        'i' to continue inserting 
+        'j' to jump to a specific line 
+        'r' to continue inserting until EOF
+        's' to search for a line with a specific date
+\end{lstlisting}
 
 Además de desarrollar el programa, se cambió la configuración de fechas en el servidor MYSQL. 
 
-\begin{lstlisting}[language=SQL,frame=ltrb,framesep=5pt,basicstyle=\normalsize,
-    keywordstyle=\ttfamily\color{OliveGreen},
-    identifierstyle=\ttfamily\color{CadetBlue}\bfseries, 
-    commentstyle=\color{Brown},
-    stringstyle=\ttfamily,
-    showstringspaces=true]
+\begin{lstlisting}[language=SQL,frame=ltrb,framesep=5pt,basicstyle=\normalsize,basicstyle=\ttfamily]
     SELECT @@global.time_zone, @@session.time_zone;
     SET GLOBAL time_zone = '+00:00';
     SET SESSION time_zone = '+00:00';
 \end{lstlisting}
 
-\todo[inline]{Donde está este programa en el directorio? }
-\todo[inline]{Hablar de porqué lo parseamos a mysql, los inconvenientes (zona horaria e interrupciones en el parseo) y el diseño realizado para resolver estos problemas, además de los programas desarrollados (el primero que se rompía y el segundo que es traversecsv.cpp) }
+Este programa y su código fuente puede encontrarse a partir de la raíz del directorio dentro de \textit{datasets/}.
 
 \section{Codificación GAF}
-\subsection{Justificación del uso de OpenCL}
-\subsection{Inconvenientes}
-\subsection{Solución}
+
+\subsection{Opciones investigadas}
+\todo[inline]{hablar aquí de EventLoop y de OpenCL, de cómo no dio tiempo a implementar completamente un true async request, y de los shortcomings de la preoptimización}
 \todo[inline]{Hablar de porqué se decidió usar opencl, porqué se retrasó tanto esta parte del proyecto el diseño que era muy bueno pero muy complicado de implementar}
+\subsection{Inconvenientes}
 \todo[inline]{Hablar de porqué al final se hace todo con la cpu, que branches del desarrollo tuvieron que abandonarse/dejarse sin terminar}
+\subsection{Solución}
 
 
 \section{Entrenamiento}
