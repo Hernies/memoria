@@ -58,13 +58,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Configuración para insertar y referirse a código en cualquier
-%% lenguaje de programación
-\usepackage{listings}
-%%insertar svgs, pdfs, imágenes...
-\usepackage{graphicx}
-%% para Grafos
-\usepackage{tikz}
-\usepackage{tkz-graph} % This package is used for graph drawing
+\usepackage{listings}%% lenguaje de programación
+\usepackage{graphicx} %%insertar svgs, pdfs, imágenes...
+\usepackage{float} %% fixes figures to their definition, to fix, use [H] after the \begin of a figure
 \usetikzlibrary{positioning,arrows,}
 
 \definecolor{commentcolor}{rgb}{.804,0,0}
@@ -153,7 +149,6 @@
 \part*{Anexos}
 \addcontentsline{toc}{part}{Anexos}
 \input{secciones/anexo0}
-\input{secciones/anexo1}
 \input{secciones/anexo2}
 
 \end{document}
