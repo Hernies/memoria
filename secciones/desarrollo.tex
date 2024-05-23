@@ -1,6 +1,20 @@
 \chapter{Desarrollo}
 \label{ch:desarrollo}
-\todo[inline]{Hablar del repo de desarrollo del tfg, su estructura}
+
+
+El hardware utilizado tiene las siguientes especificaciones:
+\begin{itemize}
+    \item CPU: AMD Ryzen 5 3600XT (12) @ 3.800
+    \item GPU: AMD Radeon RX6700XT 
+    \item RAM: 16GB CL16 @ 3000
+    \item DISCO: SSD NVME 500GB
+    \item SSOO: Linux 5.15.0-107-generic \#117~20.04.1-Ubuntu
+\end{itemize}
+
+El desarrollo fue realizado en Visual Studio Code, haciendo uso de Git y GitHub como sistema de control de versiones y copia de seguridad remota del desarrollo realizado.
+El repositorio consta de la siguiente estructura de carpetas:
+
+\todo[inline]{pendiente estructura de las carpetas del repo  (un tree valdrá)}
 
 
 \section{Planificación}
@@ -59,7 +73,8 @@ Como primer paso, se decidió parsear todos los datos a una BBDD, escogiendo MYS
 \subsection{Inconvenientes}
 La inserción de datos en la base de datos fue tremendamente lenta. Para insertar un CSV entero, se tardaba en el peor de los casos cerca de las 72h de inserción continuada.
 En parte esto se debe a que se mantuvo durante un tiempo la configuración del servidor MYSQL \textit{out of the box} sin realizar ningún cambio.
-Más adelante se investigó cómo poder optimizar las inserciones, pero no se consiguió ninguna mejora destacable. A posteriori, podría haberse investigado utilizar otra herramienta que no requiriese de insertar por fuerza bruta.
+
+Más adelante se investigó cómo poder optimizar las inserciones. La solución fue reducir el número de inserciones a la base de datos y aumentar el volumen de datos por inserción. Quinientas mediciones por INSERT redujeron drásticamente el tiempo necesario, de 3 días a unos 15 minutos.
 
 \subsection{Modelo de la BBDD}
 Para este paso del desarrollo, se decidió un modelo simple, imitando la presentación de los datos en el csv.
@@ -105,18 +120,80 @@ Además de desarrollar el programa, se cambió la configuración de fechas en el
 
 Este programa y su código fuente puede encontrarse a partir de la raíz del directorio dentro de \enquote{\textit{datasets/}}.
 
+\todo[inline]{incluir datos del rendimiento del programa en el sistema}
+
 \section{Codificación GAF}
+El método de codificación sigue una serie de pasos relativamente simples: 
+\begin{lstlisting}
+    (pseudocódigo)
+    1. Dado un vector V de n elementos.
+    for (n)
+        V(n)=arccos(V(n))
+        if V(n) > 1
+            V(n)=1
+        else if V(n) < -1
+            V(n)=-1
+    2. construimos la matriz M
+    for (i)
+        for (j)
+            M=cos(V(i)+V(j))
+\end{lstlisting}
 
-\subsection{Opciones investigadas}
-\todo[inline]{hablar aquí de EventLoop y de OpenCL, de cómo no dio tiempo a implementar completamente un true async request, y de los shortcomings de la preoptimización}
-\todo[inline]{Hablar de porqué se decidió usar opencl, porqué se retrasó tanto esta parte del proyecto el diseño que era muy bueno pero muy complicado de implementar}
+
+
+\subsection{Primer Diseño}
+Dado el volumen de los datos, se ideó un programa multihilo, con gestión asíncrona de llamadas y computación en GPU via kernels de OpenCL.
+
+Se decidió separar el proceso de codificación en tres partes. Extracción de datos, Codificación de datos y Almacenamiento de Metadatos.
+
+La extracción es altamente paralelizable. Consiste en extraer de la base de datos en bloques de un cierto tamaño y preparar series de datos para guardarlos en una estructura de datos accesible para los hilos posteriores. Se decidió por un hashmap thread safe.
+Para notificar a los procesos de codificación qué series están listas, se introdujo una cola con mecanismos de sincronización para evitar posibles condiciones de carrera. Para reducir la redundancia de datos y el espacio de las estructuras de datos, sólo se introducen en la cola de series extraídas las claves resultantes de insertarlas en el hashmap.
+
+Los hilos codificadores consumen claves de la cola de series extraídas, copiando las series del hashmap a un buffer y codificando el buffer. Se hace uso de un buffer por el mismo motivo que la extracción es en bloques de datos, para reducir el overhead de hacer una llamada de sistema. Una vez codificada una serie, se introduce de vuelta en el hashmap y se introduce su clave en la cola de series codificadas.
+
+El Almacenamiento de metadatos copia el vector one-hot generado por el extractor y lo apenda a un archivo de texto. Las series codificadas siguen la misma convención para sus archivos. 
+
+
+La motivación de gestionar las llamadas asíncronas debido a que el conector a la BBDD MYSQL las soportaba pero no daba más alternativas que la espera activa llevó al desarrollo de la clase \textit{EventLoop.hpp}. Se tomó prestado un concepto muy usado en servidores, en los que los sockets de un servidor (procesos individuales) traspasan sus peticiones a un proceso que se encarga de ejecutar las peticiones. Manteniendo así el coste de mantener una conexión con un servidor como un elemento separado de las operaciones del servicio. 
+En el caso de la codificación, se implementó una solución de inserción de peticiones asíncronas, basado en promesas y futuros de funciones lambda que los procesos enviaban al EventLoop. Este se encargaba de recibirlas e instanciar un thread para ejecutar la petición, comprobando todas las peticiones de manera cíclica y devolviendo las promesas a los threads peticionantes (ver \ref{diagramaEventLoop}). 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=250px]{images/EventLoop.pdf}
+    \caption{Diseño abstracto del funcionamiento del EventLoop}
+    \label{diagramaEventLoop}
+\end{figure}
+
 \subsection{Inconvenientes}
-\todo[inline]{Hablar de porqué al final se hace todo con la cpu, que branches del desarrollo tuvieron que abandonarse/dejarse sin terminar}
-\subsection{Solución}
+Este proceso de desarrollo se vio afectado por la optimización prematura. Sin embargo, se realizaron una serie de aprendizajes muy útiles en áreas que podrían beneficiar a futuro la escalabilidad de procesos como este en el campo de la inteligencia artificial.
+\subsubsection{EventLoop}
+Aún presentando una serie de ventajas a escala, la dificultad de devolver punteros sin desreferenciarlos fue el principal obstáculo de este sistema. Por lo que sólo se hizo un uso parcial de la solución desarrollada. 
+\subsubsection{OpenCL}
+Para la codificación de datos se intentó realizar un desarrollo de kernels en OpenCL que aprovechasen las ventajas de computación paralela de la GPU. Debido a una falta de experiencia en desarrollo en OpenCL y a la naturaleza temporal del trabajo, se debió de abandonar esta rama.
+
+\subsection{Diseño Final}
+Debido a los inconvenientes expuestos, el diseño final se hizo exclusivamente en la gpu, haciendo uso de openCV para construir las imágenes.
+
+Se decidió instanciar tríos de hilos. 
+
+\todo[inline]{análisis de rendimiento}
+Tiempo transcurrido en la codificación del los datos contenidos en \\ \textit{datasets/CLEAN\_REFIT\_081116/CLEAN\_House21.csv}.
+\begin{lstlisting}
+time ./host 22 7 21031 256
+
+real	6m28,529s
+user	38m35,273s
+sys	1m52,445s
+\end{lstlisting}
 
 
-\section{Entrenamiento}
-\subsection{ZLUDA y Darknet Framework}
-\subsection{Monitorización}
+\section{Modelo y Entrenamiento}
+\subsection{Modelo}
+Se hace uso del modelo preentrenado CSPResNeXt50 de la librería timm por HuggingFace \todo{pendiente research sobre huggingface}.
+Debido a la naturaleza multidimensional de los datos y a las predicciones deseadas del modelo, se requiere una serie de ajustes a la capa de entrada y a la de salida. Por lo tanto los pesos de esas dos capas serán perdidas.
+\todo[inline]{pendiente de avanzar el desarrollo}
+
+\subsection{Pytorch}
+
 \subsection{Inconvenientes}
-\todo[inline]{Apartado pendiente}
+\todo[inline]{el modelo CSPResNeXt50 no es el más ligero, pero al ser el objetivo de este proyecto hacer un transfer learning, se hizo uso de este}

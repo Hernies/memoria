@@ -32,7 +32,7 @@ Un sistema NILM consta de las siguientes partes: Una fuente de datos (acometida 
 \end{figure}
 
 Debido a estos argumentos, la investigación de la monitorización no intrusiva se inclinó a los modelos heurísiticos y el aprendizaje automático.
-
+\todo[inline]{repasar motivos para el transfer learning}
 
 
 \section{Aprendizaje Automático}
@@ -76,7 +76,6 @@ La complejidad y el coste computacional de los los algoritmos de aprendizaje e i
 En esta sección se tratan tres conceptos de las Redes Neuronales; se dará una introducción y se expondrán las aplicaciones pertinentes al tema del proyecto.
 Por motivos de brevedad, se asume que el lector tiene una cierta base en inteligencia artificial. En caso contrario, sugiero consultar las citas y el \autoref{ch:anexoa}
 \subsection{Sparse Coding}
-\subsubsection{Breve Introducción}
 Introducido por Olshausen et al.,1997 \autocite{OLSHAUSEN}. El Sparse Coding consiste en reducir la activación de la capa oculta de las neuronas, forzando a la red neuronal a realizar un aprendizaje \autocite{stanfordSparse}.
 Su objetivo es encontrar un conjunto de vectores $\phi_i$ tal que podamos representar un vector $x$ como una combinación lineal de estos vectores: 
 $$
@@ -87,23 +86,25 @@ Este es un concepto que está fuertemente relacionado con los autoencoders y el 
 Que tienen como objetivo es que su salida sea igual a la entrada, pero limitando la capa oculta para forzar un aprendizaje \autocite{stanfordAutoEncoding}.
 Por ejemplo, supongamos que buscásemos utilizar un autoencoder para comprimir una imagen para enviarla por internet. Si no implementásemos restricciones, dado que el objetivo de la red neuronal es reducir la pérdida de información a 0; la salida del autoencoder sería la imagen, completamente idéntica.
 
-Para evitar esto en el caso de los autoencoders se introduce una capa oculta de menor tamaño en comparación a la capa de entrada como restricción para forzar un aprendizaje, al tener una capa oculta, la capa de salida (de igual tamaño a la de entrada) debe "reconstruir" la entrada \autocite{stanfordAutoEncoding} .
+Para evitar esto en el caso de los autoencoders se introduce una capa oculta de menor tamaño en comparación a la capa de entrada como restricción para forzar un aprendizaje, al tener una capa oculta, la capa de salida (de igual tamaño a la de entrada) debe \enquote{reconstruir} la entrada \autocite{stanfordAutoEncoding} .
 
-Volviendo al Sparse Coding. Al tener un conjunto de vectores sobrecompleto, los coeficientes $a_i$ ya no se determinan únicamente por el vector de entrada $x$. Luego se define una función de escasez\footnote{De ahí el "Sparse"; escasez en Español}. Definimos esta función de escasez como: tener los menos componentes ($a_i$) distintos de cero o el mínimo de componentes no cerca de cero \autocite{stanfordSparse}.
+Volviendo al Sparse Coding. Al tener un conjunto de vectores sobrecompleto, los coeficientes $a_i$ ya no se determinan únicamente por el vector de entrada $x$. Luego se define una función de escasez\footnote{De ahí el \enquote{Sparse}; escasez en Español}. Definimos esta función de escasez como: tener los menos componentes ($a_i$) distintos de cero o el mínimo de componentes no cerca de cero \autocite{stanfordSparse}.
 
-\subsubsection{Aplicaciones}
 Tanto los autoencoders como el sparse coding han sido usados en la literatura NILM.
 sparse coding:\autocite{SparseCodingNILM}
 \todo[inline]{Pendiente continuar investigando}
 
 \subsection{Clasificadores de imágenes}
-
+\todo[inline]{hablar de proyectos que usen clasificadores?}
 
 \subsection{Redes Recurrentes}
-
+\todo[inline]{hablar de proyectos que hagan uso de redes recurrentes}
 
 \section{SOTA}
-\subsection{CSPNet}     
 \subsection{Codificación GAF} 
-\subsection{Validación de Modelos: NILMTK}  
+La codificación elegida está motivada por \todo[inline]{cita pendiente} 
+\subsection{CSPNet}     
+\todo[inline]{entrar en detalle sobre CSPNet, sus creadores y proyectos SOTA que hagan uso de CSPNet}
 
+\subsection{Validación de Modelos: NILMTK}  
+\todo[inline]{hablar potencial implementación a futuro en nilmtk y papers que citan nilmtk}
