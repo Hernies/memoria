@@ -52,12 +52,24 @@
 \setlength{\marginparwidth}{2.5cm}
 \usepackage{lipsum} % permite incluir lorem-ipsum y hacer pruebas
 \usepackage{relsize} % permite cambiar tamaños de texto relativos (\smaller y \larger)
+\usepackage{minted}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Configuración para insertar y referirse a código en cualquier
 %% lenguaje de programación
 \usepackage{listings}
-
+\lstdefinestyle{tree}{
+    literate=
+    {├}{{\textbar\textminus}}1
+    {─}{{\textminus}}1
+    {└}{{+}}1
+    {│}{{\textbar}}1,
+    basicstyle=\ttfamily,
+    backgroundcolor=\color{lightgray},
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false
+}
 \definecolor{commentcolor}{rgb}{.804,0,0}
 \definecolor{keywordcolor}{rgb}{.608,.19,1}
 \definecolor{stringcolor}{rgb}{0,.545,0}

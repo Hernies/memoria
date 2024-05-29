@@ -5,7 +5,7 @@
 El hardware utilizado tiene las siguientes especificaciones:
 \begin{itemize}
     \item CPU: AMD Ryzen 5 3600XT (12) @ 3.800
-    \item GPU: AMD Radeon RX6700XT 
+    \item GPU: AMD Radeon RX6800XT 
     \item RAM: 16GB CL16 @ 3000
     \item DISCO: SSD NVME 500GB
     \item SSOO: Linux 5.15.0-107-generic \#117~20.04.1-Ubuntu
@@ -14,8 +14,24 @@ El hardware utilizado tiene las siguientes especificaciones:
 El desarrollo fue realizado en Visual Studio Code, haciendo uso de Git y GitHub como sistema de control de versiones y copia de seguridad remota del desarrollo realizado.
 El repositorio consta de la siguiente estructura de carpetas:
 
-\todo[inline]{pendiente estructura de las carpetas del repo  (un tree valdrá)}
+\begin{verbatim}
+├── datasets/
+│   └── CLEAN_REFIT_081116/
+├── encoding
+│   ├── REFIT_GAF/
+│   │   ├── house1/
+│   │   ...
+│   │   ├── house21/
+│   │   └── meta/
+│   └── thSafe/
+└── full_model
+    ├── cspvenv/
+    ├── data/
+    │   └── REFIT_GAF -> /encoding/REFIT_GAF
+    ├── first_test/
+    └── src/
 
+\end{verbatim}
 
 \section{Planificación}
 \label{sec:planificacion}
@@ -65,7 +81,7 @@ Hay una serie de problemas conocidos sobre el dataset. En la publicación asocia
     \item En algunos casos,los valores entre acumulado y dispositivos no coinciden debido a que no se monitorizaron otras variables para ajustar estas medidas conforme el ángulo de fase o el voltaje por cargas inductivas o capacitivas.
 \end{itemize}
 
-Debido a estos problemas, los datos de las casas 3, 11 y 21 no serán utilizados. Además, debido a falta de clasificación en los metadatos, las casas \todo{poner las casas que no dan datos} tampoco fueron utilizados para el entrenamiento.
+Debido a falta de clasificación en los metadatos, las casas 12 y 13 no fueron utilizadas para el entrenamiento.
 
 \section{Parseado de REFIT a MYSQL}
 Como primer paso, se decidió parsear todos los datos a una BBDD, escogiendo MYSQL como plataforma, para tener una lógica de acceso que permitiese ordenar los datos para su codificación conforme a diferentes algoritmos (secuencial, k-means) para poder extraer la mayor cantidad de características sobre los dispositivos en diferentes marcos temporales.
@@ -189,9 +205,10 @@ sys	1m52,445s
 
 \section{Modelo y Entrenamiento}
 \subsection{Modelo}
-Se hace uso del modelo preentrenado CSPResNeXt50 de la librería timm por HuggingFace \todo{pendiente research sobre huggingface}.
+Se hace uso del modelo preentrenado CSPResNeXt50 de la librería timm por HuggingFace \autocite{crunchbase2023huggingface}.
 Debido a la naturaleza multidimensional de los datos y a las predicciones deseadas del modelo, se requiere una serie de ajustes a la capa de entrada y a la de salida. Por lo tanto los pesos de esas dos capas serán perdidas.
-\todo[inline]{pendiente de avanzar el desarrollo}
+
+\todo[]
 
 \subsection{Pytorch}
 
