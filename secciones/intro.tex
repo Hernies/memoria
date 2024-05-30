@@ -5,17 +5,15 @@
 \section{Motivación y Aplicaciones}
 \label{sec:motivacionyaplicaciones}
 
-Las técnicas de Monitorización No Intrusiva de Carga (en inglés NILM o Non Intrusive Load Monitoring) extraen el consumo de electrodomésticos a partir de una curva de consumo agregada. \autocite[1]{NILMreview2017}. Dicho de otra forma. El monitoreo de carga no intrusivo es un sistema que infiere los consumos de diferentes dispositivos sobre una curva de consumo en la toma de corriente principal. Por ejemplo en la toma de corriente de una casa.
+Las técnicas de Monitorización No Intrusiva de Carga (en inglés NILM o \textit{Non Intrusive Load Monitoring}) extraen el consumo de electrodomésticos a partir de una curva de consumo agregada. \autocite[1]{NILMreview2017}. Dicho de otra forma. El monitoreo de carga no intrusivo es un sistema que infiere los consumos de diferentes dispositivos sobre una curva de consumo en la toma de corriente principal. Por ejemplo en la toma de corriente de una casa.
 
-En Europa, un tercio de la energía eléctrica se ha generado mediante energías no renovables(12\% o 333TWh carbón, 17\% o 569TWh gas natural)\autocite{energyeurope} \autocite{ember2024european}. Aún siendo un descenso récord, para poder continuar reduciendo el consumo de energías no renovables, debemos desarrollar herramientas que nos permitan hacer un uso más inteligente de la generación de energía. Herramientas como la monitorización de carga no intrusiva pueden ayudarnos a detectar patrones de uso\autocite[11]{nilmstateoftheart}, para entonces poder desarrollar políticas que permitan optimizar la generación de energía. 
+En Europa, un tercio de la energía eléctrica se ha generado mediante energías no renovables (12\% o 333TWh carbón, 17\% o 569TWh gas natural) \autocite{energyeurope} \autocite{ember2024european}. Aún siendo un descenso récord, para poder continuar reduciendo el consumo de energías no renovables, deben desarrollarse herramientas que nos permitan hacer un uso más inteligente de la generación de energía. Herramientas como la monitorización de carga no intrusiva pueden ayudar a detectar patrones de uso\autocite[11]{nilmstateoftheart}, para entonces poder desarrollar políticas que permitan optimizar la generación de energía. 
 
 Si, hipotéticamente, se redujese un 2\% la generación de electricidad a través de la combustión de carbón. Supondría una reducción de emisiones de 96.6 Millones de Toneladadas de CO2\footnote{$333*10^3\text{GWh}*290\dfrac{tCO_{2}}{GWh}$ \autocite{postcarbonelectricidad}}.
 
 Realizar un monitoreo de carga no intrusivo es un problema complejo. Actualmente el área de soluciones NILM se encuentra en la fase de investigación y desarrollo. Por lo tanto. Mi objetivo para este trabajo es entrenar y analizar el rendimiento de una inteligencia artificial especializada en la clasificación de imágenes, transformando los datos de entrenamiento de series temporales a imágenes. Detallado en el \textbf{\autoref{ch:desarrollo}}. El trabajo se centrará en cómo modificar el enfoque al problema de disgregación de consumos afecta al rendimiento de la técnica en comparación con otras técnicas del estado del arte. 
 
-Este concepto fue inventado por George W. Hart, Ed Kern y Fred Schweppe en el Instituto Tecnológico de Massachussets, en los años ochenta \autocite{192069}. Fundados por el Electric Power Research Institute, podemos encontrar el proceso básico descrito en la patente estadounidense 4,858,141.
-
-Una breve bibliografía de George W. Hart: Actualmente ejerce como escultor desde 2017. Tiene esculturas en exposición en Berkeley, Princeton, Cambridge, Duke, Brown... Cofundó el único Museo de las Matemáticas en Norteamérica y se ha retirado recientemente, trabajó en ciencia computacional, matemáticas, educación e investigación \autocite{HartBibliography}.
+Este concepto fue inventado por George W. Hart, Ed Kern y Fred Schweppe en el Instituto Tecnológico de Massachussets, durante los años ochenta \autocite{192069}. Fundados por el Electric Power Research Institute, se puede encontrar el proceso básico descrito en la patente estadounidense 4,858,141.
 
 La técnica, descrita por Hart, Kern y Schweppe en \autocite{192069} modela los consumos en lo que nombran como \enquote{Modelo Total de Carga}. El modelo total de carga depende de que dispositivos estén encendidos en un momento dado. Por lo que definen un 'proceso de cambio'.
 Esto nos lleva a un problema computacionalmente imposible de resolver salvo mediante la fuerza bruta\autocite[4]{192069} y poco margen de mejora en el modelado para simplificar su resolución. De manera resumida, el problema trata en encontrar el número de dispositivos y el consumo de cada uno. 
@@ -30,8 +28,8 @@ Siguiendo este objetivo y con el asesoramiento de Esteban García Cuesta, se dec
 \section{Objetivos}
 \label{sec:objetivos}
 Previamente al comienzo del desarrollo del proyecto, se establecieron una serie de objetivos a cumplir, dividiendo el objetivo final en pasos coherentes y concretos.
-En esta sección se detallan los objetivos de aprendizaje e investigación:
 
+\todo[inline]{rehacer objetivos}
 Este trabajo busca investigar sobre las técnicas más actuales en NILM\footnote{ver \autoref{ch:anexoa} para un glosario de términos}. Dando al lector una base de las técnicas utilizadas en el estado del arte y las matemáticas detrás de estas técnicas.
 Los objetivos de aprendizaje son extensos, el trabajo busca además profundizar en la práctica detrás de el entrenamiento de una inteligencia artificial y de los retos que presenta el uso de la computación paralela, bases de datos, GPUs, lenguajes de bajo nivel (C++, OpenCL) y el uso de frameworks de creación, entrenamiento y análisis del rendimiento de la inteligencia artificial.
 
@@ -44,13 +42,13 @@ Al finalizar este proyecto, se busca tener un modelo capaz de realizar una monit
 \label{sec:estructuramemoria}
 La memoria de esta investigación tiene los siguientes capítulos.
 \begin{itemize}
-	\item \textbf{Introducción: } Se introduce el tema, sus potenciales aplicaciones, motivación, alcance... 
-	\item \textbf{Fundamentos y Panorama Actual: } Este capítulo sirve para dar al lector una base de la teoría detrás de la tecnología, algoritmos y conceptos sobre los que se desarrolla el trabajo de fin de grado. Además de informar sobre el estado del arte en el área.
-	\item \textbf{Desarrollo: } En este capítulo se detallan los pasos tomados para el desarrollo del modelo y las herramientas que utiliza. Entrenamiento, codificación, evaluación del modelo, etc. 
-	\item \textbf{Resultados y Análisis de Impacto: } Este apartado recoge los resultados del modelo y se compara su rendimiento con otros modelos. Además recoge el análisis del impacto del modelo conforme a los Objetivos de Desarrollo Sostenible de la Agenda 2030.
-	\item \textbf{Conclusiones y Trabajo Futuro: } En este capítulo se recogen las conclusiones del trabajo y el trabajo futuro que puede hacerse para mejorar el modelo y sus partes. 
+	\item \textbf{Introducción: } Se introduce el tema, sus potenciales aplicaciones, motivación, alcance. 
+	\item \textbf{Fundamentos y Panorama Actual: } Base de la teoría detrás de la tecnología, algoritmos y conceptos sobre los que se desarrolla el trabajo de fin de grado. Además de informar sobre el estado del arte en el área.
+	\item \textbf{Desarrollo: } Los pasos tomados para el desarrollo del modelo y las herramientas que utiliza. Entrenamiento, codificación, evaluación del modelo, etc. 
+	\item \textbf{Resultados y Análisis de Impacto: } Resultados del modelo y se compara su rendimiento con otros modelos. Además recoge el análisis del impacto del modelo conforme a los Objetivos de Desarrollo Sostenible de la Agenda 2030.
+	\item \textbf{Conclusiones y Trabajo Futuro: } Conclusiones del trabajo y el trabajo futuro que puede hacerse para mejorar el modelo y sus partes. 
 	\item \textbf{Bibliografía: } Se recogen todos los recursos bibliográficos citados durante el transcurso de la investigación.
-	\item \textbf{Anexo: } Detalla código e información de interés que no tiene cabida en el cuerpo del texto. 
+	\item \textbf{Anexo: } Código e información de interés que no tiene cabida en el cuerpo del texto. 
 \end{itemize}
 
 
