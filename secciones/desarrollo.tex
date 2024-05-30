@@ -213,9 +213,9 @@ El modelo CSPResNeXt50 es un modelo de clasificación de imágenes. El objetivo 
 Este modelo se basa en la arquitectura ResNeXt50, cuyas principales ventajas radican en la eficiencia de la red y el uso de la cardinalidad (dimensión extra) para aprender características más complejas, aumentando la precisión sin aumentar el ancho o profundidad de la red \autocite{xie2017aggregated}.
 La arquitectura CSPNet se basa en la arquitectura ResNet, pero con la adición de un módulo CSP (Cross Stage Partial) que permite la fusión de características de diferentes etapas de la red, permitiendo una mejor generalización y aprendizaje de características más complejas \autocite{wang2019cspnet}.
 
-Se decició por un modelo multitarea. Ya que lo que muchos modelos no han alcanzado a realizar de forma exitosa es una clasificación de dispositivos eléctricos y una estimación del tiempo en el que se encuentran encendidos.
+Se decidió por un modelo multitarea. Ya que lo que muchos modelos no han alcanzado a realizar de forma exitosa es una clasificación de dispositivos eléctricos y una estimación del tiempo en el que se encuentran encendidos.
 
-Por tanto se establecieron dos salidas para el modelo. Una salida de clasificación de dispositivos eléctricos conforme al número de clases totales presentes en el dataset y una \todo{salida de regresión?} para estimar el tiempo en el que se encuentra cada uno de los dispositivos encendidos durante el elemento de entrenamiento suministrado.
+Se extrae de la penúltima capa de CSPResNeXt50 los \textit{features} del modelo, introduciéndose a una capa de capa de submuestreo promedio global adaptativo. Esta capa es la entrada de nuestras dos capas de salida, dos capas densas que realizan la estimación de clases y estimación temporal
 Estos datos son dos vectores de 23 elementos cada uno. El primero es un vector one-hot y el segundo es un vector de valores enteros que representan el número de instancias de cada clase en la imagen.
 \todo[inline]{modelo de la red}
 
@@ -231,13 +231,16 @@ Para esto, se instaló el módulo ROCm de Pytorch, que permite el uso de las GPU
 
 El proceso de entrenamiento escogido fue el de desarrollar un script que implementa el dataloader de pytorch para cargar las imágenes codificadas y sus etiquetas. Y el desarrollo de un script que realiza las modificaciones necesarias al modelo para poder cumplir los requisitos de la tarea.  
 
+En cuanto a los datos, tanto los vectores como la predicción temporal se expandieron a 23 elementos (las 23 clases del dataset). Los vectores temporales se normalizaron, mientras que el vector de clases no se normalizó.
+
+
 \todo[inline]{modelo de los datos de entrada y salida}
 
 \subsection{Entrenamiento}
 Se desarrolló un script de entrenamiento. Los parámetros escogidos fueron los siguientes:
 \begin{itemize}
     \item Número de épocas: 31
-    \item Tamaño del batch: 20
+    \item Tamaño del lote: 20
     \item Learning rate: 0.001
     \item Optimizador: Adam
     \item Función de pérdida 1: CrossEntropyLoss
@@ -246,9 +249,85 @@ Se desarrolló un script de entrenamiento. Los parámetros escogidos fueron los 
 
 El entrenamiento se realizó en una GPU AMD Radeon RX6800XT. El tiempo de entrenamiento fue de en torno a las 12 horas para las 31 épocas.
 
-En cuanto al cálculo de la pérdida, se decidieron por dos funciones de pérdida. La primera, CrossEntropyLoss, para la clasificación de los dispositivos eléctricos. La segunda, MSELoss, para \todo{la regresión?} de los tiempos en los que se encuentran encendidos los dispositivos eléctricos.
+\subsubsection{Cálculo de Error}
+Se decidieron por dos funciones de pérdida. La primera, la función de error con Entropía cruzada. Para la clasificación de los dispositivos eléctricos. Esta función de entropía penaliza solo las predicciones correctas, calculando el error sólo para predicciones correctas.
+$$
+CE=-\sum_{j=1}^{n}sum_{i=1}^{n} y_{i}\log{\hat{y_{i}}} \quad \text{\autocite{mao2023crossentropy}}
+$$
+
+Para implementar una función de pérdida de entropía cruzada personalizada, se aplica la función log-softmax a las predicciones. La función log-softmax se define como:
+
+\[
+\hat{y}_{\text{pred},ij} = \log \left( \frac{\exp(y_{\text{pred},ij})}{\sum_{k=1}^{C} \exp(y_{\text{pred},ik})} \right)
+\]
+
+donde \( y_{\text{pred},ij} \) es el logit predicho para la instancia \( i \) y la clase \( j \), y \( C \) es el número de clases.
+
+A continuación, se calcula el producto elemento por elemento de las etiquetas verdaderas y las predicciones log-softmax:
+
+\[
+\text{E}_i = -\sum_{j=1}^{C} y_{\text{true},ij} \cdot \hat{y}_{\text{pred},ij}
+\]
+
+donde \( y_{\text{true},ij} \) es la etiqueta verdadera para la instancia \( i \) y la clase \( j \).
+
+Luego, se suman las pérdidas a través de todas las clases para cada instancia:
+
+\[
+\text{E}_i = -\sum_{j=1}^{C} y_{\text{true},ij} \cdot \log \left( \frac{\exp(y_{\text{pred},ij})}{\sum_{k=1}^{C} \exp(y_{\text{pred},ik})} \right)
+\]
+
+Finalmente, se calcula la media de la pérdida a través de todas las instancias en el lote:
+
+\[
+\text{E} = \frac{1}{N} \sum_{i=1}^{N} \text{E}_i
+\]
+
+donde \( N \) es el número de instancias en el lote.
+
+Combinando estos pasos, la expresión final para la función de pérdida de entropía cruzada personalizada es:
+
+\[
+\text{E} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{j=1}^{C} y_{\text{true},ij} \cdot \log \left( \frac{\exp(y_{\text{pred},ij})}{\sum_{k=1}^{C} \exp(y_{\text{pred},ik})} \right)
+\]
+
+En python la implementación es la siguiente: 
+\begin{lstlisting}[language=python]
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CustomCrossEntropyLoss(nn.Module):
+    def __init__(self):
+        super(CustomCrossEntropyLoss, self).__init__()
+    
+    def forward(self, y_pred, y_true):
+        y_pred = F.log_softmax(y_pred, dim=1)
+        loss = -torch.sum(y_true * y_pred, dim=1)
+        return loss.mean()
+\end{lstlisting}
+
+Para el segundo error, la regresión temporal de los tiempos en los que se encuentran encendidos los dispositivos eléctricos. Se escogió el error cuadrático medio.
+
+Al hacer uso de dos funciones de error, y tener salidas diferentes para el modelo, se establece un equilibrado de pérdidas. La función de error que devuelve un valor menor, siempre que este valor esté como mínimo un orden de magnitud por debajo del valor mayor. En nuestro caso esta función siempre va a ser la de predicción temporal, debido a las diferencias de los datos, sus transformaciones y el cálculo de error.
+\begin{lstlisting}[language=python]
+    if math.log(class_loss.item(),10) > math.log(time_loss.item(),10):
+        time_loss_weight = math.log(class_loss.item(),10)
+    else:
+        time_loss_weight = 1.0
+    
+    loss= class_loss+time_loss*10**time_loss_weight
+\end{lstlisting}
+
 
 \subsection{Inconvenientes}
 El entrenamiento del modelo se vio afectado por la falta de experiencia en el uso de Pytorch y la falta de tiempo para investigar y aprender sobre la librería. Sin embargo, se logró realizar un entrenamiento exitoso del modelo.
+
 Los principales inconvenientes que presenta el modelo se deben al tamaño de la red preentrenada. Es muy grande y podría beneficiarse de una reducción de tamaño. Además, el modelo CSPResNeXt50 no es el más ligero, por lo que el entrenamiento del modelo es lento y requiere de una GPU potente para poder realizarlo en un tiempo razonable.
-Debido al hardware disponible, la GPU requirió de una serie de ajustes (undervolt, limitación de potencia y regulación de relojes) que limitaron el número de épocas que podían realizarse en un tiempo razonable.
+
+Debido al hardware disponible, la GPU requirió de una serie de ajustes (undervolt, limitación de potencia y regulación de relojes) que limitaron el número de épocas y el tamaño de lote que podían realizarse en un tiempo razonable.
+
+La validación del modelo no pudo implementarse eficientemente (alternando entre entrenamiento y validación para cada una de las épocas).
+
+
+Modelo multifuncional
