@@ -47,7 +47,7 @@ Los principales problemas fueron: la dificultad para programar un codificador en
 \section{REFIT Dataset}
 Tras una investigación de los potenicales datasets, se decidió usar como dataset REFIT. El nombre completo del dataset es \enquote{Personalised Retrofit Decision Support Tools For UK Homes Using Smart Home Technology}\autocite{REFIT}.
 \subsection{Características principales}
-Puede encontrarse todo el detalle sobre el dataset en \autocite{REFIT}.
+Puede encontrarse todo el detalle sobre el dataset en el artículo publicado por David Murray, Lina Stankovic y Vladimir Stankovic \autocite{REFIT}.
 
 El dataset recoge datos de 20 casas durante un periodo continuo de dos años, con un periodo de medición superior a un minuto entre mediciones para todas las casas. Siendo este el único dataset de Gran Bretaña con estas características.
 Se miden 9 dispositivos además del consumo agregado. Todas las mediciones se realizaron en vatios. 
@@ -63,7 +63,7 @@ El dataset ocupa unos 5GB de memoria, se presentan todas las mediciones de una s
 \begin{center}
     Time, Unix, Aggregate, Appliance1, ... , Appliance9, Issues
 \end{center}
-Habiendo 21 archivos en total que recogen datos, y un vigésimo segundo archivo conteniendo los metadatos de cada casa. Estos metadatos se limitan a especificar el tipo de dispositivo asociado al dispositivo o \textit{Appliance} 
+En total, hay 20 archivos en recogen datos, y un vigésimo primer archivo conteniendo los metadatos de cada casa. Estos metadatos se limitan a especificar el tipo de dispositivo asociado al dispositivo o \textit{Appliance} 
 \todo[inline]{añadir unas líneas de una casa y una y sus metadatos}
 
 En cuanto a la recogida de datos, se definió un periodo de recogida de datos de ocho segundos. Por tanto los datos se recogieron con un desplazamiento temporal. Esto quiere decir que los datos de los dispositivos y el agregado no coinciden exactamente en el tiempo, habiendo una diferencia de unos segundos entre dispositivo y dispositvo. El acumulado (o agregado) se calculaba antes de que finalizase el periodo de ocho segundos.
@@ -73,18 +73,18 @@ En cuanto a la recogida de datos, se definió un periodo de recogida de datos de
 
 Las ventajas de este dataset son, su longitud en el tiempo y la facilidad de empezar a hacer un uso de los mismos. Ya que se busca investigar sobre la viabilidad de un modelo que haga uso de clasificadores de imágenes, esto habilita la posibilidad de realizar un trabajo de fin de grado con este tema. 
 
-Hay una serie de problemas conocidos sobre el dataset. En la publicación asociada se mencionan los siguientes:
+Hay una serie de problemas conocidos sobre el dataset. En el artículo de David Murray \autocite{REFIT} se mencionan los siguientes:
 \begin{itemize}
     \item Ocasionalmente los medidores de dispositivos reportaban consumos muy por encima de de la carga máxima para un dispositivo de uso doméstico. Estas medidas se eliminaron del dataset.
     \item Hubo problemas con la sincronización temporal de los medidores de dispositivos. Esto conlleva discrepancias entre el agregado y las mediciones.
     \item Las mediciones del acumulado en casas 3, 11 y 21 se vieron afectadas debido a que los domicilios contaban con paneles solares, y recablear para evitar afectar a las medidas del acumulado no era posible.
-    \item En algunos casos,los valores entre acumulado y dispositivos no coinciden debido a que no se monitorizaron otras variables para ajustar estas medidas conforme el ángulo de fase o el voltaje por cargas inductivas o capacitivas.
+    \item En algunos casos, los valores entre acumulado y dispositivos no coinciden debido a que no se monitorizaron otras variables para ajustar estas medidas conforme el ángulo de fase o el voltaje por cargas inductivas o capacitivas.
 \end{itemize}
 
 Debido a falta de clasificación en los metadatos, las casas 12 y 13 no fueron utilizadas para el entrenamiento.
 
 \section{Parseado de REFIT a MYSQL}
-Como primer paso, se decidió parsear todos los datos a una BBDD, escogiendo MYSQL como plataforma, para tener una lógica de acceso que permitiese ordenar los datos para su codificación conforme a diferentes algoritmos (secuencial, k-means) para poder extraer la mayor cantidad de características sobre los dispositivos en diferentes marcos temporales.
+Como primer paso, se decidió parsear todos los datos a una base de datos, escogiendo MYSQL como plataforma, para tener una lógica de acceso que permitiese ordenar los datos para su codificación conforme a diferentes algoritmos (secuencial, k-means) para poder extraer la mayor cantidad de características sobre los dispositivos en diferentes marcos temporales.
 
 \subsection{Inconvenientes}
 La inserción de datos en la base de datos fue tremendamente lenta. Para insertar un CSV entero, se tardaba en el peor de los casos cerca de las 72h de inserción continuada.
@@ -97,7 +97,7 @@ Para este paso del desarrollo, se decidió un modelo simple, imitando la present
 \begin{figure}[H]
     \centering
     \includegraphics[height=250px]{images/db_parsingstep.png}
-    \caption{El modelo de la BBDD en el parseo}
+    \caption{El modelo de la BBDD en el parseo. Elaboración propia via MySQL Workbench}
     \label{diagramaBBDD}
 \end{figure}
 
@@ -136,8 +136,6 @@ Además de desarrollar el programa, se cambió la configuración de fechas en el
 
 Este programa y su código fuente puede encontrarse a partir de la raíz del directorio dentro de \enquote{\textit{datasets/}}.
 
-\todo[inline]{incluir datos del rendimiento del programa en el sistema}
-
 \section{Codificación GAF}
 El método de codificación sigue una serie de pasos relativamente simples: 
 \begin{lstlisting}
@@ -155,28 +153,23 @@ El método de codificación sigue una serie de pasos relativamente simples:
             M=cos(V(i)+V(j))
 \end{lstlisting}
 
-
-
 \subsection{Primer Diseño}
 Dado el volumen de los datos, se ideó un programa multihilo, con gestión asíncrona de llamadas y computación en GPU via kernels de OpenCL.
 
 Se decidió separar el proceso de codificación en tres partes. Extracción de datos, Codificación de datos y Almacenamiento de Metadatos.
 
 La extracción es altamente paralelizable. Consiste en extraer de la base de datos en bloques de un cierto tamaño y preparar series de datos para guardarlos en una estructura de datos accesible para los hilos posteriores. Se decidió por un hashmap thread safe.
-Para notificar a los procesos de codificación qué series están listas, se introdujo una cola con mecanismos de sincronización para evitar posibles condiciones de carrera. Para reducir la redundancia de datos y el espacio de las estructuras de datos, sólo se introducen en la cola de series extraídas las claves resultantes de insertarlas en el hashmap.
-
+Para notificar a los procesos de codificación las series que están listas para ser codificadas, se instanció una cola con mecanismos de sincronización para evitar posibles condiciones de carrera. Para reducir la redundancia de datos y el espacio de las estructuras de datos, sólo se introducen en la cola de series extraídas las claves resultantes de insertarlas en el hashmap.
 Los hilos codificadores consumen claves de la cola de series extraídas, copiando las series del hashmap a un buffer y codificando el buffer. Se hace uso de un buffer por el mismo motivo que la extracción es en bloques de datos, para reducir el overhead de hacer una llamada de sistema. Una vez codificada una serie, se introduce de vuelta en el hashmap y se introduce su clave en la cola de series codificadas.
-
 El Almacenamiento de metadatos copia el vector one-hot generado por el extractor y lo apenda a un archivo de texto. Las series codificadas siguen la misma convención para sus archivos. 
-
 
 La motivación de gestionar las llamadas asíncronas debido a que el conector a la BBDD MYSQL las soportaba pero no daba más alternativas que la espera activa llevó al desarrollo de la clase \textit{EventLoop.hpp}. Se tomó prestado un concepto muy usado en servidores, en los que los sockets de un servidor (procesos individuales) traspasan sus peticiones a un proceso que se encarga de ejecutar las peticiones. Manteniendo así el coste de mantener una conexión con un servidor como un elemento separado de las operaciones del servicio. 
 En el caso de la codificación, se implementó una solución de inserción de peticiones asíncronas, basado en promesas y futuros de funciones lambda que los procesos enviaban al EventLoop. Este se encargaba de recibirlas e instanciar un thread para ejecutar la petición, comprobando todas las peticiones de manera cíclica y devolviendo las promesas a los threads peticionantes (ver \ref{diagramaEventLoop}). 
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[height=250px]{images/EventLoop.pdf}
-    \caption{Diseño abstracto del funcionamiento del EventLoop}
+    \caption{Diseño abstracto del funcionamiento del EventLoop. Elaboración propia}
     \label{diagramaEventLoop}
 \end{figure}
 
@@ -192,7 +185,15 @@ Debido a los inconvenientes expuestos, el diseño final se hizo exclusivamente e
 
 Se decidió instanciar tríos de hilos. 
 
-\todo[inline]{análisis de rendimiento}
+Parámetros de invocación:
+\begin{lstlisting}
+$ ./host
+Usage: 
+./host <house number> <number of threads> <batch size> <number of batches>
+SERIES SIZE IS A DEFINE
+\end{lstlisting}
+La última línea es un comentario relevante debido a que se consideró la posibilidad de alternar el tamaño de la serie y por ende el tamaño de las imágenes codificadas. 
+
 Tiempo transcurrido en la codificación del los datos contenidos en \\ \textit{datasets/CLEAN\_REFIT\_081116/CLEAN\_House21.csv}.
 \begin{lstlisting}
 time ./host 22 7 21031 256
@@ -202,6 +203,7 @@ user	38m35,273s
 sys	1m52,445s
 \end{lstlisting}
 
+Este programa y su código fuente puede encontrarse a partir de la raíz del directorio dentro de \enquote{\textit{encoding/}}.
 
 \section{Modelo y Entrenamiento}
 \subsection{Modelo}
@@ -215,12 +217,15 @@ La arquitectura CSPNet se basa en la arquitectura ResNet, pero con la adición d
 
 Se decidió por un modelo multitarea. Ya que lo que muchos modelos no han alcanzado a realizar de forma exitosa es una clasificación de dispositivos eléctricos y una estimación del tiempo en el que se encuentran encendidos.
 
-Se extrae de la penúltima capa de CSPResNeXt50 los \textit{features} del modelo, introduciéndose a una capa de capa de submuestreo promedio global adaptativo. Esta capa es la entrada de nuestras dos capas de salida, dos capas densas que realizan la estimación de clases y estimación temporal
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=250px]{images/modelo_IA.pdf}
+    \caption{Diseño abstracto del modelo. Elaboración propia}
+    \label{diagramaIA}
+\end{figure}
+
+Se extrae de la penúltima capa de CSPResNeXt50 los \textit{features} del modelo, introduciéndose a una capa de capa de submuestreo promedio global adaptativo. Esta capa es la entrada de nuestras dos capas de salida, dos capas densas que realizan la estimación de clases y estimación temporal (ver \ref{diagramaIA}).
 Estos datos son dos vectores de 23 elementos cada uno. El primero es un vector one-hot y el segundo es un vector de valores enteros que representan el número de instancias de cada clase en la imagen.
-\todo[inline]{modelo de la red}
-
-
-
 
 \subsection{Pytorch}
 Debido a que el único modelo que se encontró que cumplía los requisitos (modelo preentrenado, clasificación de imágenes, enfoque CSPNet) fue el modelo CSPResNeXt50, se decidió hacer uso de la librería Pytorch para el entrenamiento del modelo, ya que el modelo preentrenado se encontraba en la librería timm de HuggingFace.
@@ -233,9 +238,6 @@ El proceso de entrenamiento escogido fue el de desarrollar un script que impleme
 
 En cuanto a los datos, tanto los vectores como la predicción temporal se expandieron a 23 elementos (las 23 clases del dataset). Los vectores temporales se normalizaron, mientras que el vector de clases no se normalizó.
 
-
-\todo[inline]{modelo de los datos de entrada y salida}
-
 \subsection{Entrenamiento}
 Se desarrolló un script de entrenamiento. Los parámetros escogidos fueron los siguientes:
 \begin{itemize}
@@ -247,7 +249,7 @@ Se desarrolló un script de entrenamiento. Los parámetros escogidos fueron los 
     \item Función de pérdida 2: MSELoss
 \end{itemize}
 
-El entrenamiento se realizó en una GPU AMD Radeon RX6800XT. El tiempo de entrenamiento fue de en torno a las 12 horas para las 31 épocas.
+El entrenamiento se realizó en una GPU AMD Radeon RX6800XT. El tiempo de entrenamiento fue de en torno a las 22 horas para las 31 épocas.
 
 \subsubsection{Cálculo de Error}
 Se decidieron por dos funciones de pérdida. La primera, la función de error con Entropía cruzada. Para la clasificación de los dispositivos eléctricos. Esta función de entropía penaliza solo las predicciones correctas, calculando el error sólo para predicciones correctas.
@@ -298,7 +300,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class CustomCrossEntropyLoss(nn.Module):
-    def __init__(self):
         super(CustomCrossEntropyLoss, self).__init__()
     
     def forward(self, y_pred, y_true):
@@ -309,16 +310,58 @@ class CustomCrossEntropyLoss(nn.Module):
 
 Para el segundo error, la regresión temporal de los tiempos en los que se encuentran encendidos los dispositivos eléctricos. Se escogió el error cuadrático medio.
 
-Al hacer uso de dos funciones de error, y tener salidas diferentes para el modelo, se establece un equilibrado de pérdidas. La función de error que devuelve un valor menor, siempre que este valor esté como mínimo un orden de magnitud por debajo del valor mayor. En nuestro caso esta función siempre va a ser la de predicción temporal, debido a las diferencias de los datos, sus transformaciones y el cálculo de error.
-\begin{lstlisting}[language=python]
-    if math.log(class_loss.item(),10) > math.log(time_loss.item(),10):
-        time_loss_weight = math.log(class_loss.item(),10)
-    else:
-        time_loss_weight = 1.0
-    
-    loss= class_loss+time_loss*10**time_loss_weight
-\end{lstlisting}
+Al hacer uso de dos funciones de error, y tener salidas diferentes para el modelo, se establece un equilibrado de pérdidas, sólo durante el periodo de entrenamiento.
 
+Se decidió por un equilibrado de pérdidas con pesos basados en los gradientes de clases y tiempo. Se extraen los gradientes de la penúltima capa del modelo. Se normalizan y establecen los pesos como: 
+
+$$
+\text{peso}_k={(\frac{\text{grad norm}_k}{\frac{1}{N}\sum_{i=1}^{N}\text{grad norm}_i})}^\alpha
+$$
+
+Donde $\alpha$ es un hiperparámetro que controla la sensitividad del ajuste de los pesos.
+Por último, se normalizan los pesos para que no se desestabilice la función total de pérdida.
+
+Puede observarse el código en python asociado:
+\begin{lstlisting}[language=python]
+def calculate_loss(model, pred_class_count, pred_time, 
+        true_class_count, true_time, training, alpha=1):
+# Compute the losses
+class_loss = CustomCrossEntropyLoss()(pred_class_count, true_class_count)
+time_loss = F.mse_loss(pred_time, true_time)
+
+if training:
+    # Zero out any existing gradients
+    model.zero_grad()
+
+    # Calculate gradients for class_loss
+    class_loss.backward(retain_graph=True)
+    class_grads = [p.grad.clone().detach() for p in model.parameters()
+            if p.grad is not None]
+    class_grad_norm = torch.sqrt(sum([g.norm() ** 2 for g in class_grads]))
+
+    # Zero gradients before calculating for the next loss
+    model.zero_grad()
+
+    # Calculate gradients for time_loss
+    time_loss.backward(retain_graph=True)
+    time_grads = [p.grad.clone().detach() for p in model.parameters() 
+            if p.grad is not None]
+    time_grad_norm = torch.sqrt(sum([g.norm() ** 2 for g in time_grads]))
+
+    avg_grad_norm = (class_grad_norm + time_grad_norm) / 2
+    class_weight = (class_grad_norm / avg_grad_norm).pow(alpha)
+    time_weight = (time_grad_norm / avg_grad_norm).pow(alpha)
+
+    sum_weights = class_weight + time_weight
+    class_weight /= sum_weights
+    time_weight /= sum_weights
+
+    loss = class_loss * class_weight + time_loss * time_weight
+else:
+    loss = class_loss + time_loss
+
+    return loss
+\end{lstlisting}
 
 \subsection{Inconvenientes}
 El entrenamiento del modelo se vio afectado por la falta de experiencia en el uso de Pytorch y la falta de tiempo para investigar y aprender sobre la librería. Sin embargo, se logró realizar un entrenamiento exitoso del modelo.
@@ -329,5 +372,4 @@ Debido al hardware disponible, la GPU requirió de una serie de ajustes (undervo
 
 La validación del modelo no pudo implementarse eficientemente (alternando entre entrenamiento y validación para cada una de las épocas).
 
-
-Modelo multifuncional
+Los modelos multifuncionales son complejos de crear, entrenar y validar, este modelo no se ha mantenido exento de esos retos. Especialmente para alguien con poca o ninguna experiencia.
