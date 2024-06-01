@@ -35,11 +35,11 @@ Debido a estos argumentos, la investigación de la monitorización no intrusiva 
 
 \section{Aprendizaje Automático}
 
-En la Historia de la Inteligencia Artificial, se han definido una serie de etapas de gran crecimiento y financiación como  \foreignquote{spanish}{veranos} \autocite{briefAIHistory} (tres concretamente). Alternados por (dos) \foreignquote{spanish}{inviernos}; donde el interés, la financiación y el número de publicaciones decrecían significativamente \autocite{briefAIHistory}.
+En la Historia de la Inteligencia Artificial, se han definido una serie de etapas de gran crecimiento y financiación como  \foreignquote{spanish}{veranos} (tres concretamente). Alternados por (dos) \foreignquote{spanish}{inviernos}; donde el interés, la financiación y el número de publicaciones decrecían significativamente \autocite{briefAIHistory}.
 En los principios de la década de los 2010, comenzó el tercer \enquote{verano} de la Inteligencia Artificial. En 2012 ocurre un avance técnico: unos años antes, Olga Russakovsky creó el reto ImageNet \autocite{ImageNetRussakovsky}; un repositorio de más de un millón de imágenes de objetos a lo largo de más de mil categorías diferentes. 
 Este reto estimuló a la comunidad científica, 
 
-Resulta lógico que el número de artículos científicos proponiendo modelos que permitiesen resolver los retos que presenta NIML aumentase, debido al comienzo de este tercer verano.
+Resulta lógico que el número de artículos científicos proponiendo modelos que permitiesen resolver los retos que presenta NIML aumentase.
 
 
 De los que se destacan los Modelos Ocultos de Markov, el Sparse Coding y finalmente las Redes Neuronales. Siendo estas últimas el foco principal del trabajo, y de esta sección. 
@@ -69,7 +69,7 @@ Otras ventajas que presenta es su bajo coste computacional en el entrenamiento. 
 En el caso de los Modelos Factoriales de Markov Ocultos (con siglas FHMM en inglés), presentan ciertas ventajas en comparación con los HMM \footnote{Hidden Markov Models, o en español los Modelos Ocultos de Markov}:
 La complejidad y el coste computacional de los los algoritmos de aprendizaje e inferencia son menores para los HMM. Sin embargo, tanto FHMM como HMM presentan limitaciones al volumen máximo de dispositivos simultáneos, incluso en casos como en la investigación de Kolter, J. Ziko \autocite{afmap2012} donde se propone un nuevo algoritmo no supervisado. El algoritmo desarrollado (AFMAP) no presenta los problemas de alta complejidad y máximos locales, pero requiere de etiquetación manual después de la disgregación. Y presenta bajo rendimiento para dispositivos electrónicos y de cocina \autocite[5]{NILMreview2017}.
 
-El modelo propuesto por Parson et. al. 2014 \autocite{Parson2014} presenta un alto rendimiento para clasificar dispositivos con un número de estados finitos.
+El modelo propuesto por Parson et. al. 2014 \autocite{PARSON20141} presenta un alto rendimiento para clasificar dispositivos con un número de estados finitos.
 
 
 \section{Redes Neuronales}
@@ -77,7 +77,7 @@ El modelo propuesto por Parson et. al. 2014 \autocite{Parson2014} presenta un al
 
 En esta sección se tratan tres conceptos de las Redes Neuronales; se dará una introducción y se expondrán las aplicaciones pertinentes al tema del proyecto.
 \subsection{Sparse Coding}
-Introducido por Olshausen et. al. 1997 \autocite{OLSHAUSEN}. El Sparse Coding consiste en reducir la activación de la capa oculta de las neuronas, forzando a la red neuronal a realizar un aprendizaje \autocite{stanfordSparse}.
+Introducido por Olshausen et al.,1997 \autocite{OLSHAUSEN}. El Sparse Coding consiste en reducir la activación de la capa oculta de las neuronas, forzando a la red neuronal a realizar un aprendizaje \autocite{stanfordSparse}.
 Su objetivo es encontrar un conjunto de vectores $\phi_i$ tal que podamos representar un vector $x$ como una combinación lineal de estos vectores: 
 $$
 x = \sum_{i=1}^{k}a_i\phi_i
@@ -100,7 +100,7 @@ En la solución propuesta por Mengheng Xue en \autocite{SparseCodingNILM}, busca
 
 \subsection{Redes Recurrentes}
 \todo[inline]{hablar de proyectos que hagan uso de redes recurrentes}
-En la literatura, el uso de redes recurrentes es infrecuente ?
+En la literatura, el uso de redes recurrentes es 
 
 
 
@@ -108,19 +108,12 @@ En la literatura, el uso de redes recurrentes es infrecuente ?
 \label{SOTA}
 Estado del arte más relacionado con los objetivos y el enfoque del proyecto.
 \subsection{Codificación de imágenes para NILM} 
-
+La codificación elegida está motivada por \todo[inline]{cita pendiente} 
 En la literatura, la codificación de imágenes es un enfoque presente en varios proyectos. Los modelos propuestos por Shikha Singh et al 2017 \autocite{Singh2017} trabajan sobre imágenes codificadas con una transformada de ondícula de 2 niveles, esto permite extraer diferentes resoluciones de un rango temporal de consumo.
-
-En cuanto al uso de codificación GAF, Ang Gao et. al. 2023 \autocite{GAO2023109443} es el único hasta donde llegan nuestros conocimientos que ha hecho uso de esta codificación en relación al enfoque del trabajo.
 
 \subsection{CSPNet}     
 \todo[inline]{entrar en detalle sobre CSPNet, sus creadores y proyectos SOTA que hagan uso de CSPNet}
-CSPNet es una arquitectura de redes neuronales introducida por Chien-Yao Wang et. al. 2020 \autocite{CSPNetOG}. 
-Al aplicarse esta arquitectura a clasificadores de imágenes como ResNeXt \autocite{xie2017aggregated} o DenseNet \autocite{huang2018densely} , optimizó su rendimiento. Reduciendo costes de computación, uso de memoria y además beneficiando la velocidad de inferencia y la precisión de estos modelos \autocite{CSPNetOG}.
-
-Hasta donde llegan nuestros conocimientos, no se ha llegado a proponer el uso de un clasificador de imágenes y más específicamente el uso de un clasificador con arquitectura CSPNet integrada para realizar disgregación de consumo eléctrico. 
-
-En la publicación de Michele D'Inececco \autocite{Inecco2019}, se explora el aprendizaje transferido con varios datasets, entre ellos REFIT e UK-DALE aplicando una red neuronal convolucional de 5 capas, el aprendizaje a transferir siendo las señales específicas de los dispositivos eléctricos via aprendizaje seq2point.
+https://www.sciencedirect.com/science/article/pii/S037877961930046X?fr=RR-2&ref=pdf_download&rr=88c1b15d9cce6672
 
 \subsection{Validación de Modelos: NILMTK}  
 \todo[inline]{hablar potencial implementación a futuro en nilmtk y papers que citan nilmtk}

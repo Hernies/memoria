@@ -1,0 +1,81 @@
+
+
+[29] Makonin S, Popowich F, Baji IV, Gill B, Bartram L. Exploiting hmm sparsity to
+perform online real-time nonintrusive load monitoring. IEEE Trans Smart Grid
+2016;7(6):2575–85.
+[30] Guedes JDS, Ferreira DD, Barbosa BHG, Duque CA, Cerqueira AS. Non-intrusive
+appliance load identification based on higher-order statistics. IEEE Latin Am Trans
+2015;13:3343–9.
+[31] Krull C, Thiel M, Horton G. Testing applicability of virtual stochastic sensors for
+non-intrusive appliance load monitoring, Electron Notes Theoret Comput Sci
+2018;337:119–34 [proceedings of the Ninth International Workshop on the
+Practical Application of Stochastic Modelling (PASM)].
+[32] Kong W, Dong ZY, Ma J, Hill DJ, Zhao J, Luo F. An extensible approach for nonintrusive load disaggregation with smart meter data. IEEE Trans Smart Grid
+2018;9(4):3362–72.
+[33] Liu Y, Geng G, Gao S, Xu W. Non-intrusive energy use monitoring for a group of
+electrical appliances. IEEE Trans Smart Grid 2018;9(4):3801–10.
+[34] Ji TY, Liu L, Wang TS, Lin WB, Li MS, Wu QH. Non-intrusive load monitoring using
+additive factorial approximate maximum a posteriori based on iterative fuzzy cMeans. IEEE Trans Smart Grid 2019;10(6):6667–77.
+Y. Himeur, et al. Applied Energy 267 (2020) 114877
+15
+[35] Mengistu MA, Girmay AA, Camarda C, Acquaviva A, Patti E. A cloud-based on-line
+disaggregation algorithm for home appliance loads. IEEE Trans Smart Grid
+2019;10(3):3430–9.
+[36] Holweger J, Dorokhova M, Bloch L, Ballif C, Wyrsch N. Unsupervised algorithm for
+disaggregating low-sampling-rate electricity consumption of households. Sustain
+Energy Grids Netw 2019;19:100244.
+[37] Bonfigli R, Principi E, Fagiani M, Severini M, Squartini S, Piazza F. Non-intrusive
+load monitoring by using active and reactive power in additive factorial hidden
+markov models. Appl Energy 2017;208:1590–607.
+[38] Cominola A, Giuliani M, Piga D, Castelletti A, Rizzoli A. A hybrid signature-based
+iterative disaggregation algorithm for non-intrusive load monitoring. Appl Energy
+2017;185:331–44.
+[39] Henao N, Agbossou K, Kelouwani S, Hosseini SS, Fournier M. Power estimation of
+multiple two-state loads using a probabilistic non-intrusive approach. Energies
+2018;11(1).
+[40] Raiker GA, Reddy SB, Umanand L, Yadav A, Shaikh MM. Approach to non-intrusive
+load monitoring using factorial hidden markov model. 2018 IEEE 13th
+International Conference on Industrial and Information Systems (ICIIS). 2018. p.
+381–6.
+[41] Song L, Yao W, Jie T. Non-intrusive load decomposition method based on the factor
+hidden Markov model. In: 2018 37th Chinese control conference (CCC); 2018. p.
+8994–9.
+[42] Kong W, Dong ZY, Hill DJ, Luo F, Xu Y. Improving nonintrusive load monitoring
+efficiency via a hybrid programing method. IEEE Trans Industr Inf
+2016;12(6):2148–57.
+[43] Mauch L, Yang B. A new approach for supervised power disaggregation by using a
+deep recurrent lstm network. 2015 IEEE global conference on signal and information processing (GlobalSIP). 2015. p. 63–7.
+[44] Chen K, Wang Q, He Z, Chen K, Hu J, He J. Convolutional sequence to sequence
+non-intrusive load monitoring. J Eng 2018;2018(17):1860–4.
+[45] Sirojan T, Phung BT, Ambikairajah E. Deep neural network based energy disaggregation. 2018 IEEE international conference on smart energy grid engineering
+(SEGE). 2018. p. 73–7.
+[46] Baets LD, Ruyssinck J, Develder C, Dhaene T, Deschrijver D. Appliance classification using vi trajectories and convolutional neural networks. Energy Build
+2018;158:32–6.
+[47] Bonfigli R, Felicetti A, Principi E, Fagiani M, Squartini S, Piazza F. Denoising autoencoders for non-intrusive load monitoring: Improvements and comparative
+evaluation. Energy Build 2018;158:1461–74.
+[48] De Baets L, Dhaene T, Deschrijver D, Develder C, Berges M. VI-based appliance
+classification using aggregated power consumption data. 2018 IEEE international
+conference on smart computing (SMARTCOMP). 2018. p. 179–86.
+[49] Yang Y, Zhong J, Li W, Gulliver TA, Li S. Semi-supervised multi-label deep learning
+based non-intrusive load monitoring in smart grids. IEEE Trans Industr Inf 2019:1.
+[50] Cui G, Liu B, Luan W, Yu Y. Estimation of target appliance electricity consumption
+using background filtering. IEEE Trans Smart Grid 2019;10(6):5920–9.
+[51] Harell A, Makonin S, Baji IV. Wavenilm: a causal neural network for power disaggregation from the complex power signal. ICASSP 2019–2019 IEEE international
+conference on acoustics, speech and signal processing (ICASSP). 2019. p. 8335–9.
+[52] Xia M, Liu W, Wang K, Zhang X, Xu Y. Non-intrusive load disaggregation based on
+deep dilated residual network. Electr Power Syst Res 2019;170:277–85.
+[53] Zhang Y, Yang G, Ma S. Non-intrusive load monitoring based on convolutional
+neural network with differential input, Procedia CIRP 2019;83:670–4 [11th CIRP
+Conference on Industrial Product-Service Systems].
+[54] Li Y, Yin B, Wang P, Zhang R. Non-intrusive load monitoring based on convolutional neural network mixed residual unit. J Phys: Conf Ser 2019;1176:022052.
+[55] Chen K, Zhang Y, Wang Q, Hu J, Fan H, He J. Scale- and context-aware convolutional non-intrusive load monitoring. IEEE Trans Power Syst 2019:1.
+[56] Kong W, Dong ZY, Wang B, Zhao J, Huang J. A practical solution for non-intrusive
+type ii load monitoring based on deep learning and post-processing. IEEE Trans
+Smart Grid 2019:1.
+[57] Baets LD, Develder C, Dhaene T, Deschrijver D. Detection of unidentified appliances
+in non-intrusive load monitoring using siamese neural networks. Int J Electr Power
+Energy Syst 2019;104:645–53.
+[58] Murray D, Stankovic L, Stankovic V, Lulic S, Sladojevic S. Transferability of neural
+network approaches for low-rate energy disaggregation. ICASSP 2019–2019 IEEE
+international conference on acoustics, speech and signal processing (ICASSP). 2019.
+p. 8330–4.
