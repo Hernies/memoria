@@ -1,5 +1,17 @@
 \chapter{Conclusiones y trabajo futuro}
 
 \section{Conclusiones}
+La monitorización de carga eléctrica no intrusiva es una tarea compleja, las ventajas que propone tienen el potencial de tener un impacto positivo en la sociedad, siempre que se tenga en consideración la seguridad del modelo y la importancia de la privaciddad de los datos. En este trabajo se ha explorado la posibilidad de aplicar transferencia de aprendizaje a un clasificador de imágenes ResNeXt optimizado por la arquitectura CSPNet. Los resultados obtenidos sugieren que el modelo CSPResNeXt es capaz de clasificar correctamente los dispositivos eléctricos presentes en una vivienda, con una precisión promedio de 0.45 y un puntaje F1 promedio de 0.48 . Sin embargo, se observan fluctuaciones significativas en la pérdida de validación, lo que sugiere la presencia de sobreajuste. Esto se refleja también en los picos observados en la pérdida de validación, que indican que el modelo tiene dificultades para generalizar en algunos puntos del entrenamiento.
+
+
 \section{Trabajo a Futuro}
+De cara a un trabajo de fin de máster o un doctorado, se exponen los siguientes objetivos a futuro:
+\begin{itemize}
+    \item Implementar un modelo CSPResNeXt de menor tamaño.
+    \item Obviar el uso de bases de datos, ya que solo complican el proceso.
+    \item Implementar el algoritmo de codificación GAF para GPUs, haciendo uso de OpenCL.
+    \item Añadir tests para prevenir el overfitting y cuantificarlo según las propuestas de James Schmidt et. al. 2023 \autocite{schmidt2023testing}.
+\end{itemize}
+
 \section{Alegato Final}
+Esta tesis ha sido un reto personal, que ha requerido de un esfuerzo y dedicación considerable. A pesar de las dificultades encontradas, se ha logrado completar el trabajo con éxito. Se espera que los resultados obtenidos sean de utilidad para futuros trabajos en el área de la monitorización de carga eléctrica no intrusiva.

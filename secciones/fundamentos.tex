@@ -93,18 +93,16 @@ Tanto los autoencoders como el sparse coding han sido usados en la literatura NI
 
 En la solución propuesta por Mengheng Xue en \autocite{SparseCodingNILM}, buscan separar una señal de consumo agregada sin dar información sobre sus componentes, identificando componentes a través de una arquitectura escasa. 
 
-\subsection{Clasificadores de imágenes}
-\autocite{Radoslav2023}
-\todo[inline]{hablar de proyectos que usen clasificadores}
-\todo[inline]{hablar de proyectos que usen resnext}
 
 \subsection{Redes Recurrentes}
-\todo[inline]{hablar de proyectos que hagan uso de redes recurrentes}
-En la literatura, el uso de redes recurrentes es infrecuente ?
+
+
+Introducidas por una serie de investigadores: Rumelhart et. al. 1986 \autocite{Rumelhart1986LearningRB}; introdujo el algoritmo de retropropagación, una herramienta esencial en el entrenamiento de redes neuronales. Elman(1990) avanzó sobre las propuestas de Jordan(1986)\autocite{Jordan1986} creando modelos que integrasen representaciones temporales de datos \autocite{Elman1990} . Las redes recurrentes son un tipo de red neuronal profunda. Son particularmente efectivas para procesar secuencias de datos, reteniendo información sobre estados previos en su procesado de entradas. Esto es especialmente útil para tareas de clasificación de series temporales, como NILM.
+Un ejemplo específico de la aplicación de RNN en NILM es su uso en modelos de secuencia a secuencia (seq2seq), donde los datos de entrada son secuencias de mediciones de energía y las salidas son secuencias de estados de los aparatos (encendido/apagado) o su consumo específico \autocite{Huber2014}\autocite{Kaibin2018}.
 
 
 
-\section{SOTA}
+\section{Especificación del Estado del Arte}
 \label{SOTA}
 Estado del arte más relacionado con los objetivos y el enfoque del proyecto.
 \subsection{Codificación de imágenes para NILM} 
@@ -114,16 +112,17 @@ En la literatura, la codificación de imágenes es un enfoque presente en varios
 En cuanto al uso de codificación GAF, Ang Gao et. al. 2023 \autocite{GAO2023109443} es el único hasta donde llegan nuestros conocimientos que ha hecho uso de esta codificación en relación al enfoque del trabajo.
 
 \subsection{CSPNet}     
-\todo[inline]{entrar en detalle sobre CSPNet, sus creadores y proyectos SOTA que hagan uso de CSPNet}
 CSPNet es una arquitectura de redes neuronales introducida por Chien-Yao Wang et. al. 2020 \autocite{CSPNetOG}. 
 Al aplicarse esta arquitectura a clasificadores de imágenes como ResNeXt \autocite{xie2017aggregated} o DenseNet \autocite{huang2018densely} , optimizó su rendimiento. Reduciendo costes de computación, uso de memoria y además beneficiando la velocidad de inferencia y la precisión de estos modelos \autocite{CSPNetOG}.
 
-Hasta donde llegan nuestros conocimientos, no se ha llegado a proponer el uso de un clasificador de imágenes y más específicamente el uso de un clasificador con arquitectura CSPNet integrada para realizar disgregación de consumo eléctrico. 
+Hasta donde llegan nuestros conocimientos, no se ha llegado a proponer el uso de un clasificador de imágenes con arquitectura CSPNet integrada para realizar disgregación de consumo eléctrico. 
+
+Hay ciertas similitudes en la literatura \autocite{Radoslav2023}. 
+\autocite{Xia2019}
 
 En la publicación de Michele D'Inececco \autocite{Inecco2019}, se explora el aprendizaje transferido con varios datasets, entre ellos REFIT e UK-DALE aplicando una red neuronal convolucional de 5 capas, el aprendizaje a transferir siendo las señales específicas de los dispositivos eléctricos via aprendizaje seq2point.
 
 \subsection{Validación de Modelos: NILMTK}  
-\todo[inline]{hablar potencial implementación a futuro en nilmtk y papers que citan nilmtk}
 NILMTK, publicado por Nipun Batra et. al. 2014 \autocite{Nipun2014}, presenta un toolkit de código abierto diseñado para facilitar la investigación y el desarrollo en el campo. Consta de interfaz de usuario, librerías, datasets estándar, algoritmos de disgregación y la flexibilidad y extensibilidad para integrar nuevos algoritmos y datasets. 
 En 2019, publica NILMTK-contrib \autocite{Nipun2019}, una extensión comunitaria de NILMTK que busca acelerar la investigación en NILM mediante contribuciones comunitarias. 
 
