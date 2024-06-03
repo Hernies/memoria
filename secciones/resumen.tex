@@ -1,18 +1,37 @@
 \chapter*{Resumen}
 
-\todo[inline]{Aquí va el resumen del trabajo. Extensión máxima 2 páginas.}
 La Monitorización No Intrusiva de Carga, es una técnica que busca administrar los consumos de diferentes dispositivos eléctricos sin la necesidad de medir directamente cada uno de ellos.
 
 El objetivo de este proyecto es desarrollar la pieza clave de este sistema. Una Inteligencia Artificial que permita identificar los dispositivos conectados y consumiendo a una red eléctrica, como podría ser una casa, un restaurante o una oficina.
 
-El modelo a diseñar deberá ser capaz de identificar los dispositivos conectados a la red eléctrica, y estimar el tiempo de uso de cada uno. Para ello, se ha decidido hacer uso de CSPNet, un modelo potente, computacionalmente barato de entrenar
+El modelo a diseñar deberá ser capaz de identificar los dispositivos conectados a la red eléctrica, y estimar el tiempo de uso de cada uno. Para ello, se ha decidido hacer uso de CSPNet, una arquitectura potente, que, aplicado a clasificadores de imágenes mejoran su precisión reduciendo el coste computacional de entrenamiento. 
 
-Este trabajo 
+El objetivo de este Trabajo de Fin de Grado es desarrollar un sistema de monitorización no intrusiva de carga eléctrica mediante el uso de reconocimiento de imágenes.
+
+El sistema diseñado es capaz de identificar los dispositivos conectados a la red eléctrica y estimar su tiempo de uso. Se ha utilizado el dataset REFIT, el cual proporciona datos de consumo energético a lo largo del tiempo de diferentes hogares. El proceso de desarrollo incluyó la extracción, codificación y almacenamiento de datos utilizando técnicas de programación multihilo y construcción de imágenes via la librería OpenCV. Además, se implementó un modelo multitarea basado en CSPResNeXt50, adaptado para la clasificación de dispositivos eléctricos y la estimación temporal de su uso.
+
+Los resultados obtenidos demuestran la viabilidad del enfoque propuesto, mostrando un rendimiento aceptable pero con margen de mejora en la identificación y estimación del tiempo de uso de los dispositivos.
+
+Finalmente, se plantean futuras líneas de trabajo que incluyen la implementación de un modelo CSPResNeXt de menor tamaño, la optimización del algoritmo de codificación para su ejecución en GPU y la incorporación de mecanismos para prevenir y cuantificar el overfitting.
 
 \begin{otherlanguage}{english}
   \chapter*{Abstract}
 
-  \todo[inline]{Abstract of the Final Degree Project. Maximum length: 2 pages.}
+  **Abstract**
+
+Non-Intrusive Load Monitoring (NILM) is a technique that seeks to manage the consumption of different electrical devices without the need to measure each one directly.
+
+The goal of this project is to develop the key component of this system: an Artificial Intelligence capable of identifying devices connected to and consuming from an electrical network, such as a house, restaurant, or office.
+
+The designed model should be able to identify the devices connected to the electrical network and estimate their usage time. To achieve this, CSPNet, a powerful architecture that improves the precision of image classifiers while reducing computational training costs, was utilized.
+
+The aim of this Final Degree Project is to develop a non-intrusive electrical load monitoring system using image recognition.
+
+The designed system is capable of identifying devices connected to the electrical network and estimating their usage time. The REFIT dataset, which provides energy consumption data over time from different households, was used. The development process included data extraction, encoding, and storage using multithreading programming techniques and image construction via the OpenCV library. Additionally, a multitask model based on CSPResNeXt50 was implemented, adapted for the classification of electrical devices and the temporal estimation of their usage.
+
+The results obtained demonstrate the feasibility of the proposed approach, showing acceptable performance but with room for improvement in the identification and estimation of device usage time.
+
+Finally, future lines of work are proposed, including the implementation of a smaller CSPResNeXt model, optimization of the encoding algorithm for execution on GPU, and the incorporation of mechanisms to prevent and quantify overfitting.
 \end{otherlanguage}
 
 
